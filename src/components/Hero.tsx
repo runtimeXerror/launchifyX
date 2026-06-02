@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { useTheme } from '../ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const TECH = [
   { label:'React',        color:'#61dafb' },{ label:'Node.js',      color:'#3ecf8e' },
@@ -18,12 +20,12 @@ const CARDS = [
   { icon:'🌐', title:'Projects Delivered', sub:'On time, every time',     num:'50+',     bar:'linear-gradient(90deg,#4f8cff,#a0c4ff)', w:'85%', bg:'rgba(79,140,255,.15)',  anim:'hov1 5s ease-in-out infinite',          pos:{ top:0,    right:0  } },
   { icon:'📈', title:'Client Growth Rate', sub:'Avg. across all clients',  num:'5x ROI',  bar:'linear-gradient(90deg,#ff4d00,#ff8c00)', w:'78%', bg:'rgba(255,77,0,.12)',    anim:'hov2 6s ease-in-out infinite',          pos:{ top:110,  right:50 } },
   { icon:'⚡', title:'Launch Speed',        sub:'Avg. time to go live',     num:'3 Weeks', bar:'linear-gradient(90deg,#ffb800,#ffe066)', w:'92%', bg:'rgba(255,184,0,.1)',    anim:'hov1 7s ease-in-out infinite reverse',  pos:{ bottom:10,right:5  } },
-];
+] as const;
 const widths = [210,230,195];
 
 export default function Hero() {
   const { dark } = useTheme();
-  const particlesRef = useRef(null);
+  const particlesRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const pc = particlesRef.current; if (!pc) return; pc.innerHTML = '';
@@ -70,10 +72,10 @@ export default function Hero() {
           </p>
           <div style={{ display:'flex',gap:12,flexWrap:'wrap',marginBottom:36 }}>
             <a href="#services" className="btn-primary">🚀 Explore Services</a>
-            <a href="#contact"  className="btn-outline" style={{ color:textColor }}>💬 Let's Talk</a>
+            <a href="#contact"  className="btn-outline" style={{ color:textColor }}>💬 Let&apos;s Talk</a>
           </div>
           <div style={{ display:'flex',gap:0,borderTop:`1px solid ${statBorder}`,paddingTop:20 }}>
-            {[['50','+','Projects Launched'],['98','%','Client Satisfaction'],['5','x','Average Growth']].map(([n,s,l],i) => (
+            {([['50','+','Projects Launched'],['98','%','Client Satisfaction'],['5','x','Average Growth']] as const).map(([n,s,l],i) => (
               <div key={l} style={{ flex:1,paddingLeft:i>0?24:0,borderLeft:i>0?`1px solid ${statBorder}`:'' }}>
                 <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.9rem',fontWeight:800,lineHeight:1,color:textColor }}>{n}<em style={{ fontStyle:'normal',color:'#ff4d00' }}>{s}</em></div>
                 <div style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.58rem',fontWeight:500,textTransform:'uppercase',letterSpacing:'.13em',color:mutedColor,marginTop:4 }}>{l}</div>
@@ -127,7 +129,7 @@ export default function Hero() {
               <div style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.65rem',color:mutedColor,lineHeight:1.5 }}>{card.sub}</div>
               <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.55rem',fontWeight:800,marginTop:8,color:textColor }}>{card.num}</div>
               <div style={{ height:3,background:dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)',borderRadius:4,marginTop:9,overflow:'hidden' }}>
-                <div style={{ height:'100%',borderRadius:4,background:card.bar,'--bar-w':card.w,animation:'grow 2s ease forwards' }}/>
+                <div style={{ height:'100%',borderRadius:4,background:card.bar,'--bar-w':card.w,animation:'grow 2s ease forwards' } as React.CSSProperties}/>
               </div>
             </div>
           ))}

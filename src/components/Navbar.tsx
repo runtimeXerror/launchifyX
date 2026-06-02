@@ -1,5 +1,7 @@
+'use client';
+
 import { useState, useEffect } from 'react';
-import { useTheme } from '../ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const LINKS = [
   { label: 'Services',  href: '#services'     },
@@ -53,14 +55,24 @@ export default function Navbar() {
     const fn = () => {
       setScrolled(window.scrollY > 60);
       let cur = '';
-      document.querySelectorAll('section[id]').forEach(s => {
-        if (window.scrollY >= s.offsetTop - 160) cur = s.id;
+      document.querySelectorAll('section[id]').forEach((s) => {
+        if (window.scrollY >= (s as HTMLElement).offsetTop - 160) cur = s.id;
       });
       setActiveId(cur);
     };
     window.addEventListener('scroll', fn, { passive: true });
     return () => window.removeEventListener('scroll', fn);
   }, []);
+
+  // Lock body scroll when the mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   const pillBg = dark
     ? (scrolled ? 'rgba(5,7,15,.96)' : 'rgba(10,12,28,.74)')
@@ -81,6 +93,7 @@ export default function Navbar() {
           {/* ── BRAND with real logo ── */}
           <a href="#hero" style={{ display:'flex',alignItems:'center',gap:10,textDecoration:'none',flexShrink:0 }}>
             <div style={{ width:42,height:42,borderRadius:'50%',overflow:'hidden',border:'2px solid rgba(79,140,255,.35)',flexShrink:0,boxShadow:'0 0 16px rgba(79,140,255,.25)',position:'relative',display:'flex',alignItems:'center',justifyContent:'center',background:'#0d1633' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="LaunchifyX Logo" style={{ width:60,height:60,objectFit:'contain' }}/>
               <span style={{ position:'absolute',inset:-4,borderRadius:'50%',border:'1px solid rgba(255,184,0,.12)',animation:'pulse-ring 3s ease infinite',pointerEvents:'none' }}/>
             </div>
@@ -94,7 +107,7 @@ export default function Navbar() {
             </div>
           </a>
 
-          {/* ── NAV LINKS ── */}
+          {/* ── NAV LINKS (Desktop) ── */}
           <ul style={{ display:'flex',gap:2,listStyle:'none',alignItems:'center' }}>
             {LINKS.map(({ label, href }) => {
               const isActive = activeId === href.slice(1);
@@ -109,7 +122,7 @@ export default function Navbar() {
             })}
           </ul>
 
-          {/* ── RIGHT: socials + theme + CTA ── */}
+          {/* ── RIGHT: socials + theme + CTA (Desktop) ── */}
           <div style={{ display:'flex',alignItems:'center',gap:8 }}>
             {/* divider */}
             <div style={{ width:1,height:20,background:dark?'rgba(255,255,255,.09)':'rgba(0,0,80,.12)',margin:'0 4px' }}/>
@@ -161,6 +174,161 @@ export default function Navbar() {
           </div>
         </nav>
       </div>
+
+      {/* ── MOBILE MENU OVERLAY ── */}
+      <div style={{
+        position:'fixed',
+        inset:0,
+        background:dark?'rgba(5,7,15,.98)':'rgba(240,242,255,.98)',
+        backdropFilter:'blur(20px)',
+        zIndex:299,
+        opacity:menuOpen?1:0,
+        visibility:menuOpen?'visible':'hidden',
+        transition:'opacity .4s ease, visibility .4s ease'
+      }}>
+        {/* Animated background */}
+        <div style={{
+          position:'absolute',
+          top:'50%',
+          left:'50%',
+          width:'600px',
+          height:'600px',
+          background:'radial-gradient(circle, rgba(79,140,255,.1) 0%, transparent 70%)',
+          borderRadius:'50%',
+          transform:'translate(-50%, -50%)',
+          filter:'blur(80px)',
+          animation:'orb-pulse 8s ease infinite'
+        }}/>
+
+        {/* Close Button */}
+        <button
+          onClick={()=>setMenuOpen(false)}
+          style={{
+            position:'absolute',
+            top:20,
+            right:20,
+            width:44,
+            height:44,
+            borderRadius:'50%',
+            background:dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)',
+            border:`1px solid ${dark?'rgba(255,255,255,.12)':'rgba(0,0,80,.12)'}`,
+            color:dark?'#f0f2ff':'#0d0f20',
+            cursor:'pointer',
+            display:'flex',
+            alignItems:'center',
+            justifyContent:'center',
+            transition:'all .3s'
+          }}
+          onMouseEnter={e=>{ e.currentTarget.style.transform='rotate(90deg) scale(1.1)'; e.currentTarget.style.background=dark?'rgba(255,77,0,.15)':'rgba(255,77,0,.1)'; }}
+          onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.background=dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)'; }}
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        {/* Menu Content */}
+        <div style={{
+          display:'flex',
+          flexDirection:'column',
+          alignItems:'center',
+          justifyContent:'center',
+          height:'100%',
+          gap:8
+        }}>
+          {LINKS.map(({ label, href }, index) => {
+            const isActive = activeId === href.slice(1);
+            return (
+              <a
+                key={label}
+                href={href}
+                onClick={()=>setMenuOpen(false)}
+                style={{
+                  fontFamily:"'Exo 2',sans-serif",
+                  fontSize:'clamp(1.8rem, 5vw, 2.5rem)',
+                  fontWeight:800,
+                  color:isActive?'#ff4d00':(dark?'#f0f2ff':'#0d0f20'),
+                  textDecoration:'none',
+                  padding:'12px 24px',
+                  borderRadius:16,
+                  background:isActive?(dark?'rgba(255,77,0,.1)':'rgba(255,77,0,.08)'):'transparent',
+                  transition:'all .3s ease',
+                  opacity:menuOpen?1:0,
+                  transform:menuOpen?'translateY(0)':'translateY(30px)',
+                  transitionDelay:`${index * 0.08}s`,
+                  position:'relative'
+                }}
+                onMouseEnter={e=>{ e.currentTarget.style.transform='translateX(10px)'; e.currentTarget.style.background=dark?'rgba(79,140,255,.1)':'rgba(79,140,255,.08)'; }}
+                onMouseLeave={e=>{ e.currentTarget.style.transform='translateX(0)'; e.currentTarget.style.background=isActive?(dark?'rgba(255,77,0,.1)':'rgba(255,77,0,.08)'):'transparent'; }}
+              >
+                {label}
+                {isActive && <span style={{ position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',width:6,height:6,background:'#ff4d00',borderRadius:'50%',display:'block' }}/>}
+              </a>
+            );
+          })}
+
+          {/* Mobile CTA */}
+          <a
+            href="#contact"
+            onClick={()=>setMenuOpen(false)}
+            style={{
+              marginTop:30,
+              padding:'16px 40px',
+              background:'linear-gradient(135deg,#4f8cff,#ff4d00)',
+              color:'#fff',
+              textDecoration:'none',
+              fontFamily:"'Montserrat',sans-serif",
+              fontSize:'0.85rem',
+              fontWeight:700,
+              textTransform:'uppercase',
+              letterSpacing:'.1em',
+              borderRadius:50,
+              boxShadow:'0 8px 30px rgba(79,140,255,.4)',
+              transition:'all .3s ease',
+              opacity:menuOpen?1:0,
+              transform:menuOpen?'translateY(0)':'translateY(30px)',
+              transitionDelay:'0.4s'
+            }}
+            onMouseEnter={e=>{ e.currentTarget.style.transform='scale(1.05)'; e.currentTarget.style.boxShadow='0 12px 40px rgba(79,140,255,.5)'; }}
+            onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 8px 30px rgba(79,140,255,.4)'; }}
+          >
+            Get Started →
+          </a>
+
+          {/* Social Links */}
+          <div style={{
+            display:'flex',
+            gap:16,
+            marginTop:40,
+            opacity:menuOpen?1:0,
+            transform:menuOpen?'translateY(0)':'translateY(30px)',
+            transitionDelay:'0.5s'
+          }}>
+            <a href="https://www.linkedin.com/company/launchifyx" target="_blank" rel="noopener noreferrer"
+              style={{ color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',transition:'color .2s' }}
+              onMouseEnter={e=>{ e.currentTarget.style.color='#0a66c2'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; }}>
+              <LiIcon/>
+            </a>
+            <a href="https://www.instagram.com/launchifyx" target="_blank" rel="noopener noreferrer"
+              style={{ color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',transition:'color .2s' }}
+              onMouseEnter={e=>{ e.currentTarget.style.color='#e1306c'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; }}>
+              <IgIcon/>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* ── RESPONSIVE STYLES ── */}
+      <style>{`
+        @media (max-width: 960px) {
+          nav ul { display: none !important; }
+          nav > div > a[href="#contact"] { display: none !important; }
+          nav > div > button[style*="display:'none'"] { display: flex !important; }
+        }
+      `}</style>
     </>
   );
 }
