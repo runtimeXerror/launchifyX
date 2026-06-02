@@ -1,8 +1,21 @@
+'use client';
+
 import { useState } from 'react';
 import useReveal from './useReveal';
-import { useTheme } from '../ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
-const PLANS = [
+interface Plan {
+  name: string;
+  emoji: string;
+  price: string;
+  note: string;
+  tag: string;
+  feat: boolean;
+  yes: string[];
+  no: string[];
+}
+
+const PLANS: Plan[] = [
   {
     name:'Micro', emoji:'🌱', price:'4,999', note:'One-time · Perfect for individuals',
     tag:'', feat:false,
@@ -35,7 +48,7 @@ const PLANS = [
   },
 ];
 
-function PlanCard({ plan }) {
+function PlanCard({ plan }: { plan: Plan }) {
   const { dark } = useTheme();
   const [hov, setHov] = useState(false);
 
@@ -89,8 +102,8 @@ function PlanCard({ plan }) {
 
 export default function Pricing() {
   const { dark } = useTheme();
-  const headRef = useReveal();
-  const gridRef = useReveal();
+  const { ref: headRef } = useReveal();
+  const { ref: gridRef } = useReveal();
 
   return (
     <section id="pricing" style={{ padding:'108px 60px',background:dark?'#05070f':'#f4f6ff',transition:'background .35s' }}>
@@ -106,9 +119,9 @@ export default function Pricing() {
       </div>
 
       {/* Custom plan CTA */}
-      <div style={{ textAlign:'center',marginTop:56,padding:'32px 40px',background:dark?'rgba(79,140,255,.06)':'rgba(79,140,255,.05)',border:`1px solid ${dark?'rgba(79,140,255,.15)':'rgba(79,140,255,.2)'}`,borderRadius:16,maxWidth:700,margin:'56px auto 0' }}>
+      <div style={{ textAlign:'center',padding:'32px 40px',background:dark?'rgba(79,140,255,.06)':'rgba(79,140,255,.05)',border:`1px solid ${dark?'rgba(79,140,255,.15)':'rgba(79,140,255,.2)'}`,borderRadius:16,maxWidth:700,margin:'56px auto 0' }}>
         <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.2rem',fontWeight:800,marginBottom:8,color:dark?'#f0f2ff':'#0d0f20' }}>Need a Custom Package? 🛠️</div>
-        <p style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.88rem',color:'#6c7591',marginBottom:22,lineHeight:1.7 }}>Have specific requirements or a tight budget? We'll build a package exactly for you — no bloat, no overpaying.</p>
+        <p style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.88rem',color:'#6c7591',marginBottom:22,lineHeight:1.7 }}>Have specific requirements or a tight budget? We&apos;ll build a package exactly for you — no bloat, no overpaying.</p>
         <a href="#contact" className="btn-primary" style={{ fontSize:'.76rem' }}>Talk to Us → Get Custom Quote</a>
       </div>
     </section>

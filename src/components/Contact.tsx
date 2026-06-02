@@ -1,25 +1,59 @@
+'use client';
+
 import { useState } from 'react';
 import useReveal from './useReveal';
-import { useTheme } from '../ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const INFO = [
-  { icon:'📧', label:'Email',         value:'contact.launchifyx@gmail.com'     },
+  { icon:'📧', label:'Email',         value:'contact.launchifyx@gmail.com' },
   { icon:'📍', label:'Based In',      value:'India · Serving Globally' },
-  { icon:'⚡', label:'Response Time', value:'Within 24 Hours'          },
+  { icon:'⚡', label:'Response Time', value:'Within 24 Hours' },
 ];
 const SVCS = ['Custom Website Development','Mobile App Development','E-Commerce Store Creation','Branding & Digital Identity','Startup Launch Solutions'];
 
+type FocusEl = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
+
 export default function Contact() {
   const { dark } = useTheme();
-  const leftRef = useReveal(); const rightRef = useReveal();
+  const { ref: leftRef } = useReveal();
+  const { ref: rightRef } = useReveal();
   const [sent, setSent] = useState(false);
-  const [f, setF] = useState({ name:'',email:'',service:'',msg:'' });
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState('');
+  const [f, setF] = useState({ name:'', email:'', service:'', msg:'' });
 
   const textColor = dark ? '#f0f2ff' : '#0d0f20';
-  const inputStyle = { background:dark?'#0b0d1a':'#fff', border:`1.5px solid ${dark?'#232545':'#c8ccec'}`, color:textColor, fontFamily:"'Montserrat',sans-serif", fontSize:'.86rem', padding:'13px 16px', outline:'none', width:'100%', borderRadius:6, resize:'none', WebkitAppearance:'none' };
-  const labelStyle = { fontFamily:"'Montserrat',sans-serif",fontSize:'.6rem',fontWeight:700,letterSpacing:'.13em',textTransform:'uppercase',color:'#6c7591' };
-  const focusOn  = e => { e.target.style.borderColor='#ff4d00'; e.target.style.boxShadow='0 0 0 3px rgba(255,77,0,.1)'; };
-  const focusOff = e => { e.target.style.borderColor=dark?'#232545':'#c8ccec'; e.target.style.boxShadow=''; };
+  const inputStyle: React.CSSProperties = { background:dark?'#0b0d1a':'#fff', border:`1.5px solid ${dark?'#232545':'#c8ccec'}`, color:textColor, fontFamily:"'Montserrat',sans-serif", fontSize:'.86rem', padding:'13px 16px', outline:'none', width:'100%', borderRadius:6, resize:'none', WebkitAppearance:'none' };
+  const labelStyle: React.CSSProperties = { fontFamily:"'Montserrat',sans-serif",fontSize:'.6rem',fontWeight:700,letterSpacing:'.13em',textTransform:'uppercase',color:'#6c7591' };
+  const focusOn  = (e: React.FocusEvent<FocusEl>) => { e.target.style.borderColor='#ff4d00'; e.target.style.boxShadow='0 0 0 3px rgba(255,77,0,.1)'; };
+  const focusOff = (e: React.FocusEvent<FocusEl>) => { e.target.style.borderColor=dark?'#232545':'#c8ccec'; e.target.style.boxShadow=''; };
+
+  const handleSubmit = async () => {
+    setError('');
+    if (!f.name || !f.email) {
+      setError('Please enter your name and email.');
+      return;
+    }
+    setSending(true);
+    try {
+      const res = await fetch('/api/clients', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: f.name, email: f.email, service: f.service, message: f.msg }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'Something went wrong. Please try again.');
+      }
+      setSent(true);
+      setF({ name:'', email:'', service:'', msg:'' });
+      setTimeout(() => setSent(false), 3000);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section id="contact" style={{ padding:'108px 60px',background:dark?'#05070f':'#f4f6ff',transition:'background .35s' }}>
@@ -27,10 +61,10 @@ export default function Contact() {
         <div ref={leftRef} className="reveal">
           <div className="sec-label">Get In Touch</div>
           <h2 style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'clamp(2.4rem,4.5vw,4.6rem)',fontWeight:800,lineHeight:.98,marginBottom:18,letterSpacing:'-.02em',color:textColor }}>
-            Let's Build<br/>Something <span style={{ color:'#ff4d00' }}>Incredible.</span>
+            Let&apos;s Build<br/>Something <span style={{ color:'#ff4d00' }}>Incredible.</span>
           </h2>
           <p style={{ fontFamily:"'Montserrat',sans-serif",color:'#6c7591',fontSize:'.91rem',lineHeight:1.78,maxWidth:380,marginBottom:38 }}>
-            Have a project in mind? Tell us about it — we'll come back with a tailored plan, a clear timeline, and a fair price within 24 hours.
+            Have a project in mind? Tell us about it — we&apos;ll come back with a tailored plan, a clear timeline, and a fair price within 24 hours.
           </p>
           <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
             {INFO.map(({ icon,label,value }) => (
@@ -76,11 +110,12 @@ export default function Contact() {
               <label style={labelStyle}>Tell Us About Your Project</label>
               <textarea style={{ ...inputStyle,height:106 }} placeholder="Describe your idea, goals, and timeline — the more detail the better!" value={f.msg} onChange={e=>setF({...f,msg:e.target.value})} onFocus={focusOn} onBlur={focusOff}/>
             </div>
-            <button onClick={()=>{ setSent(true); setTimeout(()=>setSent(false),3000); }}
-              style={{ background:sent?'linear-gradient(135deg,#1a7a1a,#2ab82a)':'linear-gradient(135deg,#ff4d00,#ff8c00)',color:'#fff',fontFamily:"'Montserrat',sans-serif",fontSize:'.76rem',fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',border:'none',padding:'16px 36px',cursor:'pointer',borderRadius:6,alignSelf:'flex-start',boxShadow:sent?'0 4px 20px rgba(0,180,0,.3)':'0 4px 20px rgba(255,77,0,.35)',transition:'background .3s,box-shadow .3s,transform .2s' }}
+            {error && <div style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.78rem',color:'#ff4d00' }}>{error}</div>}
+            <button onClick={handleSubmit} disabled={sending}
+              style={{ background:sent?'linear-gradient(135deg,#1a7a1a,#2ab82a)':'linear-gradient(135deg,#ff4d00,#ff8c00)',color:'#fff',fontFamily:"'Montserrat',sans-serif",fontSize:'.76rem',fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',border:'none',padding:'16px 36px',cursor:sending?'wait':'pointer',borderRadius:6,alignSelf:'flex-start',opacity:sending?0.8:1,boxShadow:sent?'0 4px 20px rgba(0,180,0,.3)':'0 4px 20px rgba(255,77,0,.35)',transition:'background .3s,box-shadow .3s,transform .2s' }}
               onMouseEnter={e=>e.currentTarget.style.transform='translateY(-2px)'}
               onMouseLeave={e=>e.currentTarget.style.transform=''}>
-              {sent ? 'Message Sent ✓' : 'Send Message →'}
+              {sent ? 'Message Sent ✓' : sending ? 'Sending…' : 'Send Message →'}
             </button>
           </div>
         </div>

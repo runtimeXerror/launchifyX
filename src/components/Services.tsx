@@ -1,6 +1,8 @@
+'use client';
+
 import { useState } from 'react';
 import useReveal from './useReveal';
-import { useTheme } from '../ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 const SVCS = [
   { icon:'🌐', n:'01', title:'Custom Website Development', desc:'Blazing-fast, pixel-perfect websites built to convert visitors into paying customers — tailored to your brand and goals.' },
@@ -10,7 +12,9 @@ const SVCS = [
   { icon:'🚀', n:'05', title:'Startup Launch Solutions',    desc:'End-to-end launch packages — strategy, design, tech — so you hit the market fast, loud, and ready to win.' },
 ];
 
-function Card({ icon, n, title, desc }) {
+interface CardProps { icon: string; n: string; title: string; desc: string; }
+
+function Card({ icon, n, title, desc }: CardProps) {
   const { dark } = useTheme();
   const [hov, setHov] = useState(false);
   return (
@@ -29,7 +33,8 @@ function Card({ icon, n, title, desc }) {
 
 export default function Services() {
   const { dark } = useTheme();
-  const headRef = useReveal(); const gridRef = useReveal();
+  const { ref: headRef } = useReveal();
+  const { ref: gridRef } = useReveal();
   return (
     <section id="services" style={{ padding:'108px 60px',background:dark?'#0b0d18':'#eaecf8',transition:'background .35s' }}>
       <div ref={headRef} className="reveal" style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:64,flexWrap:'wrap',gap:24 }}>

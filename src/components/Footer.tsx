@@ -1,8 +1,10 @@
-import { useTheme } from '../ThemeContext';
+'use client';
 
-const LINKS = {
+import { useTheme } from '@/context/ThemeContext';
+
+const LINKS: Record<string, [string, string][]> = {
   Services: [['Web Development','#services'],['Mobile Apps','#services'],['E-Commerce','#services'],['Branding','#services']],
-  Company:  [['About Us','#'],['Portfolio','#'],['Blog','#'],['Contact','#contact']],
+  Company:  [['About Us','#'],['Portfolio','#portfolio'],['Blog','#'],['Contact','#contact']],
   Connect:  [['LinkedIn','https://www.linkedin.com/company/launchifyx'],['Instagram','https://www.instagram.com/launchifyx'],['Twitter / X','#'],['Behance','#']],
 };
 
@@ -20,6 +22,7 @@ export default function Footer() {
         <div style={{ maxWidth:280 }}>
           <a href="#hero" style={{ display:'flex',alignItems:'center',gap:10,textDecoration:'none',marginBottom:14 }}>
             <div style={{ width:36,height:36,borderRadius:'50%',overflow:'hidden',border:'2px solid rgba(79,140,255,.3)',flexShrink:0,background:'#0d1633',display:'flex',alignItems:'center',justifyContent:'center' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/logo.png" alt="LaunchifyX" style={{ width:32,height:32,objectFit:'contain' }}/>
             </div>
             <span style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'.98rem',fontWeight:800,color:text }}>

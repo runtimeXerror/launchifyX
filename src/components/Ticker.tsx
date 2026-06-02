@@ -1,5 +1,5 @@
 const ITEMS = ['WEB DEVELOPMENT','MOBILE APPS','E-COMMERCE','BRANDING','STARTUP LAUNCH','UI/UX DESIGN'];
-const repeated = [...ITEMS,...ITEMS];
+const repeated = [...ITEMS, ...ITEMS];
 
 export default function Ticker() {
   return (

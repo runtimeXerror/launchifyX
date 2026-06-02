@@ -106,6 +106,7 @@ body {
 @keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
 @keyframes float-p { 0%{transform:translateY(0) scale(1);opacity:0} 20%{opacity:1} 80%{opacity:.5} 100%{transform:translateY(-100vh) scale(.5);opacity:0} }
 @keyframes toggle-spin { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+@keyframes float { 0%, 100% { transform: translateY(0) translateX(0); } 50% { transform: translateY(-30px) translateX(20px); } }
 
 /* ── RESPONSIVE ── */
 @media (max-width:960px) { .hero-layout{grid-template-columns:1fr 1fr !important} .hero-right{display:none !important} }
