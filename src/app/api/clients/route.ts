@@ -13,7 +13,7 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { name, email, phone, company, service, budget, message } = body ?? {};
+    const { name, email, phone, company, service, budget, timeline, source, message, notes } = body ?? {};
 
     if (!name || !email) {
       return NextResponse.json(
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     const client = await prisma.clientRequest.create({
-      data: { name, email, phone, company, service, budget, message },
+      data: { name, email, phone, company, service, budget, timeline, source, message, notes },
     });
 
     return NextResponse.json(client, { status: 201 });

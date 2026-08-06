@@ -1,6 +1,7 @@
 'use client';
 
 import useReveal from './useReveal';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Project {
   id: number;
@@ -10,6 +11,7 @@ interface Project {
   image: string;
   tags: string[];
   color: string;
+  period: string;
 }
 
 const PROJECTS: Project[] = [
@@ -20,7 +22,8 @@ const PROJECTS: Project[] = [
     description: 'Full-featured restaurant website with online ordering, table reservations, and real-time menu management.',
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80',
     tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-    color: '#ff6b35'
+    color: '#ff6b35',
+    period: 'Oct 2025 – Nov 2025'
   },
   {
     id: 2,
@@ -29,7 +32,8 @@ const PROJECTS: Project[] = [
     description: 'Modern bistro website with dynamic menu, customer reviews, and loyalty program integration.',
     image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80',
     tags: ['Next.js', 'PostgreSQL', 'Tailwind'],
-    color: '#4f8cff'
+    color: '#4f8cff',
+    period: 'Nov 2025 – Dec 2025'
   },
   {
     id: 3,
@@ -38,28 +42,61 @@ const PROJECTS: Project[] = [
     description: 'Elegant restaurant platform with multi-location support, inventory management, and analytics dashboard.',
     image: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80',
     tags: ['React', 'Express', 'Redis', 'Chart.js'],
-    color: '#ff4d00'
+    color: '#ff4d00',
+    period: 'Dec 2025 – Jan 2026'
   },
   {
     id: 4,
-    title: 'RRS DCE BGS Attendance',
+    title: 'RRSDCE Begusarai Class Attendance App',
     category: 'Mobile App',
-    description: 'Class attendance tracking app for RRS DCE BGS with QR code scanning, real-time sync, and detailed reports.',
+    description: 'Class attendance tracking app for RRSDCE Begusarai with QR code scanning, real-time sync, and detailed reports.',
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
     tags: ['React Native', 'Firebase', 'QR Scanner'],
-    color: '#00c853'
+    color: '#00c853',
+    period: 'Apr 2026 – May 2026'
+  },
+  {
+    id: 5,
+    title: 'Royal Catering Co.',
+    category: 'Catering Website',
+    description: 'Premium catering service platform with event booking, customizable menus, real-time availability and online payment integration.',
+    image: 'https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80',
+    tags: ['Next.js', 'Prisma', 'Stripe', 'PostgreSQL'],
+    color: '#ffb800',
+    period: 'Feb 2026 – Mar 2026'
+  },
+  {
+    id: 6,
+    title: 'Bright Minds Academy',
+    category: 'School Website',
+    description: 'Modern school management portal with student enrollment, attendance tracking, exam results, fee payment and parent communication system.',
+    image: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80',
+    tags: ['React', 'Node.js', 'MongoDB', 'Razorpay'],
+    color: '#a855f7',
+    period: 'Apr 2026 – May 2026'
   }
 ];
 
 export default function Portfolio() {
   const { ref, visible } = useReveal<HTMLElement>();
+  const { dark } = useTheme();
+
+  const bg        = dark ? 'linear-gradient(180deg,#12103d 0%,#1a1850 50%,#12103d 100%)' : 'linear-gradient(180deg,#faf8f3 0%,#f2ede2 50%,#faf8f3 100%)';
+  const textColor = dark ? '#ffffff' : '#0d0f20';
+  const subColor  = dark ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,40,0.6)';
+  const cardBg    = dark ? 'rgba(13,22,51,0.6)' : 'rgba(255,255,255,0.85)';
+  const cardBorder= dark ? 'rgba(79,140,255,0.15)' : 'rgba(79,140,255,0.2)';
+  const tagBg     = dark ? 'rgba(79,140,255,0.1)' : 'rgba(79,140,255,0.08)';
+  const tagBorder = dark ? 'rgba(79,140,255,0.2)' : 'rgba(79,140,255,0.25)';
+  const tagColor  = dark ? '#4f8cff' : '#3a6fd8';
 
   return (
     <section id="portfolio" ref={ref} style={{
-      padding: '120px 20px',
-      background: 'linear-gradient(180deg, #0a0e1a 0%, #0d1633 50%, #0a0e1a 100%)',
+      padding: '40px 20px 48px',
+      background: bg,
       position: 'relative',
-      overflow: 'hidden'
+      overflow: 'hidden',
+      transition: 'background .35s'
     }}>
       {/* Animated background elements */}
       <div style={{
@@ -94,7 +131,7 @@ export default function Portfolio() {
         {/* Section Header */}
         <div style={{
           textAlign: 'center',
-          marginBottom: '80px',
+          marginBottom: '48px',
           opacity: visible ? 1 : 0,
           transform: visible ? 'translateY(0)' : 'translateY(40px)',
           transition: 'all 0.8s cubic-bezier(0.23, 1, 0.32, 1)'
@@ -117,7 +154,7 @@ export default function Portfolio() {
           <h2 style={{
             fontSize: 'clamp(2rem, 5vw, 3.5rem)',
             fontWeight: 800,
-            color: '#f0f2ff',
+            color: textColor,
             marginBottom: '20px',
             fontFamily: "'Exo 2', sans-serif"
           }}>
@@ -133,7 +170,7 @@ export default function Portfolio() {
           </h2>
           <p style={{
             fontSize: '1.1rem',
-            color: 'rgba(255,255,255,0.6)',
+            color: subColor,
             maxWidth: '600px',
             margin: '0 auto',
             lineHeight: 1.7
@@ -143,18 +180,16 @@ export default function Portfolio() {
         </div>
 
         {/* Projects Grid */}
-        <div style={{
+        <div className="portfolio-grid" style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(min(350px, 100%), 1fr))',
           gap: '30px'
         }}>
           {PROJECTS.map((project, index) => (
-            <div key={project.id} style={{
-              opacity: visible ? 1 : 0,
-              transform: visible ? 'translateY(0)' : 'translateY(60px)',
-              background: 'rgba(13, 22, 51, 0.6)',
+            <div key={project.id} className="scroll-card" style={{
+              background: cardBg,
               backdropFilter: 'blur(20px)',
-              border: '1px solid rgba(79,140,255,0.15)',
+              border: `1px solid ${cardBorder}`,
               borderRadius: '24px',
               overflow: 'hidden',
               position: 'relative',
@@ -197,14 +232,15 @@ export default function Portfolio() {
                   top: '15px',
                   left: '15px',
                   padding: '6px 14px',
-                  background: `${project.color}20`,
-                  border: `1px solid ${project.color}40`,
+                  background: 'rgba(0,0,0,.65)',
+                  border: `1px solid ${project.color}80`,
                   borderRadius: '20px',
                   fontSize: '0.7rem',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
-                  color: project.color
+                  color: '#fff',
+                  backdropFilter: 'blur(8px)'
                 }}>
                   {project.category}
                 </div>
@@ -215,7 +251,7 @@ export default function Portfolio() {
                 <h3 style={{
                   fontSize: '1.4rem',
                   fontWeight: 700,
-                  color: '#f0f2ff',
+                  color: textColor,
                   marginBottom: '12px',
                   fontFamily: "'Exo 2', sans-serif"
                 }}>
@@ -223,7 +259,7 @@ export default function Portfolio() {
                 </h3>
                 <p style={{
                   fontSize: '0.95rem',
-                  color: 'rgba(255,255,255,0.6)',
+                  color: subColor,
                   lineHeight: 1.6,
                   marginBottom: '20px'
                 }}>
@@ -231,24 +267,30 @@ export default function Portfolio() {
                 </p>
 
                 {/* Tags */}
-                <div style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '8px'
-                }}>
+                <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', marginBottom:'14px' }}>
                   {project.tags.map(tag => (
                     <span key={tag} style={{
                       padding: '6px 12px',
-                      background: 'rgba(79,140,255,0.1)',
-                      border: '1px solid rgba(79,140,255,0.2)',
+                      background: tagBg,
+                      border: `1px solid ${tagBorder}`,
                       borderRadius: '12px',
                       fontSize: '0.75rem',
                       fontWeight: 500,
-                      color: '#4f8cff'
+                      color: tagColor
                     }}>
                       {tag}
                     </span>
                   ))}
+                </div>
+
+                {/* Period */}
+                <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={project.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                  <span style={{ fontFamily:"'Montserrat',sans-serif", fontSize:'.72rem', fontWeight:600, color:project.color }}>
+                    {project.period}
+                  </span>
                 </div>
               </div>
             </div>

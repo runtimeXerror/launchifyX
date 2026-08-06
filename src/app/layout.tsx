@@ -11,7 +11,13 @@ export const metadata: Metadata = {
     description: 'Fast, Modern & Budget-Friendly Web & App Solutions',
     images: ['/logo.png'],
   },
-  icons: { icon: '/favicon.png', apple: '/logo.png' },
+  icons: {
+    icon: [
+      { url: '/logo.png', type: 'image/png' },
+    ],
+    apple: '/logo.png',
+    shortcut: '/logo.png',
+  },
 };
 
 export const viewport: Viewport = {
@@ -24,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" style={{ background:'#0a0906' }}>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
       </body>

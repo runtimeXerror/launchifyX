@@ -3,30 +3,99 @@
 import { useState } from 'react';
 import useReveal from './useReveal';
 import { useTheme } from '@/context/ThemeContext';
+import { GlobeIcon, MobileIcon, CartIcon, ShieldCheckIcon, RocketIcon, BriefcaseIcon, ArrowRightIcon } from './Icons';
 
 const SVCS = [
-  { icon:'🌐', n:'01', title:'Custom Website Development', desc:'Blazing-fast, pixel-perfect websites built to convert visitors into paying customers — tailored to your brand and goals.' },
-  { icon:'📱', n:'02', title:'Mobile App Development',      desc:'Native and cross-platform iOS & Android apps that delight users and drive engagement from Day 1.' },
-  { icon:'🛒', n:'03', title:'E-Commerce Store Creation',   desc:'High-converting online stores with smooth checkout, smart inventory, and seamless payment integration built in.' },
-  { icon:'✨', n:'04', title:'Branding & Digital Identity',  desc:'Logos, color systems, and brand guidelines that make you instantly recognizable and impossible to forget.' },
-  { icon:'🚀', n:'05', title:'Startup Launch Solutions',    desc:'End-to-end launch packages — strategy, design, tech — so you hit the market fast, loud, and ready to win.' },
+  { Icon:GlobeIcon,  n:'01', title:'Custom Website Development', desc:'Blazing-fast, pixel-perfect websites built to convert visitors into customers — fully responsive, SEO-ready, and tailored to your brand.', tag:'Most Popular', color:'#4f8cff',
+    features:['Landing Pages & Business Sites','Portfolio & Blog Websites','SEO Optimized & Fast Loading','Mobile Responsive Design','CMS Integration (if needed)'] },
+  { Icon:MobileIcon, n:'02', title:'Mobile App Development', desc:'Cross-platform iOS & Android apps with smooth UX, real-time features, and scalable backend — built to grow with your business.', tag:'', color:'#a855f7',
+    features:['iOS & Android (React Native)','Real-time Features & Notifications','API & Backend Integration','App Store Deployment','Ongoing App Updates'] },
+  { Icon:CartIcon,   n:'03', title:'E-Commerce Development', desc:'High-converting online stores with secure checkout, inventory management, and payment gateway integration — ready to sell from Day 1.', tag:'', color:'#ff4d00',
+    features:['Product & Inventory Management','Razorpay / Stripe Integration','Cart, Wishlist & Orders','Admin Dashboard','Mobile-First Shopping Experience'] },
+  { Icon:ShieldCheckIcon, n:'04', title:'Website & App Maintenance', desc:'Ongoing support, performance monitoring, bug fixes, security updates, and feature upgrades — so your product always runs at 100%.', tag:'Ongoing', color:'#ffb800',
+    features:['Bug Fixes & Issue Resolution','Performance Monitoring','Security & SSL Updates','Feature Enhancements','Monthly Health Reports'] },
+  { Icon:RocketIcon, n:'05', title:'Startup Launch Package', desc:'End-to-end solution for new ventures — strategy, design, development, and launch support all in one package, fast and affordable.', tag:'New', color:'#22c55e',
+    features:['Strategy & Planning Session','Website or App Development','Brand Identity Basics','Launch Support & Go-Live','1 Month Free Maintenance'] },
+  { Icon:BriefcaseIcon, n:'06', title:'Business Consulting & Strategy', desc:'Starting from zero? We guide you step-by-step — from idea validation and business planning to digital identity, online presence, and long-term growth strategy.', tag:'', color:'#ec4899',
+    features:['Business Idea Validation','Brand Identity & Naming Guidance','Digital Presence Roadmap','Tech Stack & Product Strategy','1-on-1 Consulting Sessions'] },
 ];
 
-interface CardProps { icon: string; n: string; title: string; desc: string; }
+interface CardProps {
+  Icon: React.FC<{size?:number;color?:string}>;
+  n: string;
+  title: string;
+  desc: string;
+  tag: string;
+  color: string;
+  features: string[];
+  index: number;
+}
 
-function Card({ icon, n, title, desc }: CardProps) {
+function Card({ Icon, n, title, desc, tag, color, features, index }: CardProps) {
   const { dark } = useTheme();
   const [hov, setHov] = useState(false);
+
   return (
-    <div onMouseEnter={() => setHov(true)} onMouseLeave={() => setHov(false)}
-      style={{ background:hov?'linear-gradient(135deg,#ff4d00,#ff8c00)':(dark?'#05070f':'#fff'),padding:'48px 34px',position:'relative',overflow:'hidden',transition:'transform .35s cubic-bezier(.22,1,.36,1),box-shadow .35s,background .3s',transform:hov?'translateY(-6px)':'none',boxShadow:hov?'0 20px 60px rgba(255,77,0,.25)':(dark?'none':'0 2px 20px rgba(0,0,80,.06)'),cursor:'default',border:dark?'none':`1px solid rgba(0,0,80,.07)` }}>
-      <div style={{ position:'relative',zIndex:1 }}>
-        <span style={{ fontSize:'1.9rem',marginBottom:18,display:'block' }}>{icon}</span>
-        <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'4rem',color:hov?'rgba(255,255,255,.15)':(dark?'rgba(255,255,255,.04)':'rgba(0,0,80,.05)'),lineHeight:1,position:'absolute',top:-8,right:26,fontWeight:900,transition:'color .3s' }}>{n}</div>
-        <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.1rem',fontWeight:700,marginBottom:11,color:hov?'#fff':(dark?'#f0f2ff':'#0d0f20'),transition:'color .2s' }}>{title}</div>
-        <p style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.83rem',fontWeight:400,lineHeight:1.75,color:hov?'rgba(255,255,255,.85)':(dark?'#6c7591':'#5a6080'),marginBottom:26,transition:'color .3s' }}>{desc}</p>
-        <span style={{ fontSize:'1.2rem',color:hov?'#fff':'#ff4d00',transition:'color .3s,transform .3s',display:'inline-block',transform:hov?'translateX(7px)':'none' }}>→</span>
+    <div
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      onTouchStart={() => setHov(true)}
+      onTouchEnd={() => setTimeout(() => setHov(false), 300)}
+      style={{
+        position: 'relative',
+        padding: '28px 24px',
+        borderRadius: 16,
+        border: `1px solid ${hov ? color+'55' : (dark ? 'rgba(255,255,255,.07)' : 'rgba(0,0,0,.08)')}`,
+        background: hov
+          ? dark ? `${color}0e` : `${color}07`
+          : dark ? 'rgba(26,24,80,.9)' : 'rgba(255,255,255,.9)',
+        backdropFilter: 'blur(12px)',
+        cursor: 'default',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'border .35s, background .35s, transform .35s, box-shadow .35s',
+        transform: hov ? 'translateY(-5px)' : 'none',
+        boxShadow: hov ? `0 16px 48px ${color}20` : `0 2px 12px ${dark?'rgba(0,0,0,.2)':'rgba(0,0,0,.06)'}`,
+        overflow: 'hidden',
+      }}
+    >
+      {/* Top accent bar — always visible with color */}
+      <div style={{ position:'absolute',top:0,left:0,right:0,height:3,background:`linear-gradient(90deg,${color},${color}44,transparent)`,borderRadius:'16px 16px 0 0' }}/>
+
+      {/* Tag */}
+      {tag && (
+        <div style={{ position:'absolute',top:14,right:14,padding:'3px 10px',background:`${color}18`,border:`1px solid ${color}44`,borderRadius:20,fontFamily:"'Montserrat',sans-serif",fontSize:'.52rem',fontWeight:700,letterSpacing:'.1em',textTransform:'uppercase',color }}>
+          {tag}
+        </div>
+      )}
+
+      {/* Icon + number row */}
+      <div style={{ display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16 }}>
+        <div style={{ width:46,height:46,borderRadius:12,background:`${color}14`,border:`1px solid ${color}28`,display:'flex',alignItems:'center',justifyContent:'center',transition:'transform .35s',transform:hov?'scale(1.1)':'none',flexShrink:0 }}>
+          <Icon size={22} color={color}/>
+        </div>
+        <span style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'2.8rem',fontWeight:900,color:`${color}14`,lineHeight:1,userSelect:'none' }}>{n}</span>
       </div>
+
+      <h3 style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.18rem',fontWeight:700,marginBottom:8,color:dark?'#ffffff':'#1a1510',lineHeight:1.3 }}>{title}</h3>
+      <p style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.8rem',fontWeight:400,lineHeight:1.7,color:dark?'rgba(200,215,245,.6)':'#6a6050',marginBottom:14 }}>{desc}</p>
+
+      {/* Features list */}
+      <ul style={{ listStyle:'none',padding:0,margin:'0 0 18px',display:'flex',flexDirection:'column',gap:6 }}>
+        {features.map(f => (
+          <li key={f} style={{ display:'flex',alignItems:'center',gap:8,fontFamily:"'Montserrat',sans-serif",fontSize:'.74rem',color:dark?'rgba(200,215,245,.75)':'#5a5040' }}>
+            <span style={{ width:16,height:16,borderRadius:'50%',background:`${color}18`,border:`1px solid ${color}44`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0 }}>
+              <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      <a href={`/services/${title.toLowerCase().replace(/[&]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'')}`}
+        style={{ display:'inline-flex',alignItems:'center',gap:5,fontFamily:"'Montserrat',sans-serif",fontSize:'.72rem',fontWeight:700,color:hov?color:`${color}88`,transition:'color .3s',marginTop:'auto',textDecoration:'none' }}>
+        Learn More <ArrowRightIcon size={13} color={hov?color:`${color}88`}/>
+      </a>
     </div>
   );
 }
@@ -34,15 +103,33 @@ function Card({ icon, n, title, desc }: CardProps) {
 export default function Services() {
   const { dark } = useTheme();
   const { ref: headRef } = useReveal();
-  const { ref: gridRef } = useReveal();
+
   return (
-    <section id="services" style={{ padding:'108px 60px',background:dark?'#0b0d18':'#eaecf8',transition:'background .35s' }}>
-      <div ref={headRef} className="reveal" style={{ display:'flex',justifyContent:'space-between',alignItems:'flex-end',marginBottom:64,flexWrap:'wrap',gap:24 }}>
-        <div><div className="sec-label">What We Do</div><h2 className="sec-title">Services Crafted<br/>for Go-Getters</h2></div>
-        <p className="sec-sub">From idea to launch, every digital layer your business needs — built beautifully, delivered fast.</p>
-      </div>
-      <div ref={gridRef} className="reveal" style={{ display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(260px,1fr))',gap:dark?2:16 }}>
-        {SVCS.map(s => <Card key={s.n} {...s}/>)}
+    <section id="services" style={{ padding:'40px 20px 48px', background:dark?'#12103d':'#faf8f3', transition:'background .35s' }}>
+      <div className="section-inner">
+
+        {/* ── HEADER ── */}
+        <div ref={headRef} className="reveal" style={{ marginBottom:48 }}>
+          <div style={{ textAlign:'center' }}>
+            <div className="sec-label" style={{ justifyContent:'center' }}>What We Offer</div>
+            <h2 className="sec-title">We Build What Your <span style={{ background:'linear-gradient(135deg,#ff4d00,#ffb800)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text' }}>Business Needs</span></h2>
+          </div>
+        </div>
+
+        {/* ── GRID — all 5 cards, responsive ── */}
+        <div className="svc-grid" style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16, alignItems:'stretch' }}>
+          {SVCS.map((s,i) => <Card key={s.n} {...s} index={i}/>)}
+        </div>
+        <style>{`
+          .svc-grid { grid-template-columns: repeat(3,1fr) !important; }
+          @media (max-width: 960px) {
+            .svc-grid { grid-template-columns: repeat(2,1fr) !important; gap: 14px !important; }
+          }
+          @media (max-width: 600px) {
+            .svc-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          }
+        `}</style>
+
       </div>
     </section>
   );
