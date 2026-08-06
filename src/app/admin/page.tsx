@@ -1467,9 +1467,9 @@ export default function AdminDashboard() {
                     <div style={{ display:'flex', gap:10, alignItems:'center' }}>
                       <input type="text" placeholder={PLATFORM_META[socialNewKey]?.placeholder ?? 'https://...'} value={socialNewUrl} onChange={e => setSocialNewUrl(e.target.value)}
                         onKeyDown={e => { if(e.key==='Enter') handleAdd(); }}
-                        style={{ flex:1, background: dark?'rgba(255,255,255,.04)':'rgba(0,0,0,.03)', border:`1.5px solid ${PLATFORM_META[socialNewKey]?.color+'30' ?? 'rgba(139,92,246,.2)'}`, borderRadius:10, padding:'10px 14px', color: dark?'#e8eef8':'#1a1510', fontSize:'.82rem', outline:'none', fontFamily:"'Montserrat',sans-serif", transition:'border-color .2s' }}
+                        style={{ flex:1, background: dark?'rgba(255,255,255,.04)':'rgba(0,0,0,.03)', border:`1.5px solid ${(PLATFORM_META[socialNewKey]?.color ?? '#8b5cf6')+'30'}`, borderRadius:10, padding:'10px 14px', color: dark?'#e8eef8':'#1a1510', fontSize:'.82rem', outline:'none', fontFamily:"'Montserrat',sans-serif", transition:'border-color .2s' }}
                         onFocus={e => e.target.style.borderColor=PLATFORM_META[socialNewKey]?.color ?? '#8b5cf6'}
-                        onBlur={e => e.target.style.borderColor=PLATFORM_META[socialNewKey]?.color+'30' ?? 'rgba(139,92,246,.2)'}/>
+                        onBlur={e => e.target.style.borderColor=(PLATFORM_META[socialNewKey]?.color ?? '#8b5cf6')+'30'}/>
                       <button onClick={handleAdd}
                         style={{ display:'flex', alignItems:'center', gap:6, padding:'10px 20px', borderRadius:10, border:'none', background:`linear-gradient(135deg,${PLATFORM_META[socialNewKey]?.color ?? '#8b5cf6'},#6366f1)`, color:'#fff', cursor:'pointer', fontFamily:"'Montserrat',sans-serif", fontSize:'.8rem', fontWeight:700, flexShrink:0, boxShadow:`0 4px 14px ${PLATFORM_META[socialNewKey]?.color ?? '#8b5cf6'}40` }}>
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
