@@ -11,7 +11,7 @@ const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   // Default to dark (matches <html data-theme="dark">) to avoid hydration mismatch.
-  const [dark, setDark] = useState(true);
+  const [dark, setDark] = useState(false);
 
   // Load the saved preference after mount.
   useEffect(() => {

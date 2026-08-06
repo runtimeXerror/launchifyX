@@ -1,34 +1,48 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useTheme } from '@/context/ThemeContext';
 
 const LINKS = [
+  { label: 'Home',      href: '#hero'         },
   { label: 'Services',  href: '#services'     },
   { label: 'Pricing',   href: '#pricing'      },
+  { label: 'Our Work',  href: '#portfolio'    },
   { label: 'Clients',   href: '#testimonials' },
   { label: 'Contact',   href: '#contact'      },
 ];
 
-/* ── Sun icon ── */
+const SERVICE_ITEMS = [
+  { label: 'Custom Website Development', slug: 'custom-website-development', color: '#4f8cff',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> },
+  { label: 'Mobile App Development',     slug: 'mobile-app-development',     color: '#a855f7',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18" strokeWidth="3"/></svg> },
+  { label: 'E-Commerce Development',     slug: 'e-commerce-development',     color: '#ff4d00',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg> },
+  { label: 'Website & App Maintenance',  slug: 'website-app-maintenance',    color: '#ffb800',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg> },
+  { label: 'Startup Launch Package',     slug: 'startup-launch-package',     color: '#22c55e',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg> },
+  { label: 'Business Consulting',        slug: 'business-consulting-strategy', color: '#ec4899',
+    icon: <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> },
+];
+
 const SunIcon = () => (
   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="5"/>
-    <line x1="12" y1="1"  x2="12" y2="3"/>  <line x1="12" y1="21" x2="12" y2="23"/>
-    <line x1="4.22" y1="4.22"  x2="5.64" y2="5.64"/>  <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
-    <line x1="1"  y1="12" x2="3"  y2="12"/>  <line x1="21" y1="12" x2="23" y2="12"/>
-    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/> <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+    <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
   </svg>
 );
 
-/* ── Moon icon ── */
 const MoonIcon = () => (
   <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
   </svg>
 );
 
-/* ── LinkedIn icon ── */
 const LiIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
     <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
@@ -36,7 +50,6 @@ const LiIcon = () => (
   </svg>
 );
 
-/* ── Instagram icon ── */
 const IgIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
@@ -47,9 +60,19 @@ const IgIcon = () => (
 
 export default function Navbar() {
   const { dark, toggle } = useTheme();
-  const [scrolled, setScrolled]   = useState(false);
-  const [activeId, setActiveId]   = useState('');
-  const [menuOpen, setMenuOpen]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeId, setActiveId] = useState('');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [svcOpen, setSvcOpen] = useState(false);
+  const svcRef = useRef<HTMLLIElement>(null);
+  const [navSocials, setNavSocials] = useState({ linkedin:'https://www.linkedin.com/company/launchifyx', instagram:'https://www.instagram.com/launchifyx' });
+
+  useEffect(() => {
+    fetch('/api/settings').then(r => r.json()).then((d: Record<string,string>) => {
+      setNavSocials({ linkedin: d.social_linkedin || navSocials.linkedin, instagram: d.social_instagram || navSocials.instagram });
+    }).catch(() => {});
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const fn = () => {
@@ -64,269 +87,202 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  // Lock body scroll when the mobile menu is open
   useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
   }, [menuOpen]);
 
-  const pillBg = dark
-    ? (scrolled ? 'rgba(5,7,15,.96)' : 'rgba(10,12,28,.74)')
-    : (scrolled ? 'rgba(220,224,255,.97)' : 'rgba(240,242,255,.84)');
+  const navBg = dark
+    ? scrolled ? 'rgba(45,20,80,.97)' : 'rgba(45,20,80,.75)'
+    : scrolled ? 'rgba(250,248,243,.95)' : 'rgba(250,248,243,.7)';
 
-  const pillShadow = scrolled
-    ? `0 16px 56px ${dark?'rgba(0,0,0,.7)':'rgba(0,0,80,.15)'}`
-    : `0 8px 40px ${dark?'rgba(0,0,0,.5)':'rgba(0,0,80,.1)'}`;
+  const navBorder = dark ? 'rgba(160,100,255,.4)' : 'rgba(0,0,0,.07)';
+  const linkColor = dark ? 'rgba(200,215,245,.5)' : 'rgba(26,21,16,.45)';
+  const linkActive = dark ? '#e8eef8' : '#1a1510';
+  const iconColor = dark ? 'rgba(200,215,245,.45)' : 'rgba(26,21,16,.4)';
 
   return (
     <>
-      <div style={{ position:'fixed',top:scrolled?10:18,left:'50%',transform:'translateX(-50%)',zIndex:300,width:'calc(100% - 40px)',maxWidth:1200,transition:'top .4s cubic-bezier(.23,1,.32,1)' }}>
-        <nav style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'7px 10px 7px 14px',background:pillBg,backdropFilter:'blur(30px) saturate(180%)',WebkitBackdropFilter:'blur(30px) saturate(180%)',border:`1px solid ${dark?'rgba(255,255,255,.08)':'rgba(100,100,200,.15)'}`,borderRadius:60,boxShadow:pillShadow,transition:'background .4s,box-shadow .4s',position:'relative',overflow:'hidden' }}>
+      <div className="nav-wrapper" style={{ position:'fixed',top:scrolled?10:16,left:'50%',transform:'translateX(-50%)',zIndex:300,width:'calc(100% - 40px)',maxWidth:1200,transition:'top .4s cubic-bezier(.23,1,.32,1)' }}>
+        <div>
+        <nav style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'0 16px',height:56,background:navBg,backdropFilter:'blur(24px) saturate(160%)',WebkitBackdropFilter:'blur(24px) saturate(160%)',border:`1px solid ${navBorder}`,borderRadius:'16px 16px 16px 16px',boxShadow:scrolled?(dark?'0 8px 32px rgba(0,0,0,.4)':'0 8px 32px rgba(0,0,0,.08)'):'0 4px 20px rgba(0,0,0,.06)',transition:'all .4s cubic-bezier(.23,1,.32,1)',overflow:'visible' }}>
 
-          {/* shimmer top line */}
-          <div style={{ position:'absolute',top:0,left:0,right:0,height:1,background:'linear-gradient(90deg,transparent,rgba(79,140,255,.4) 30%,rgba(255,77,0,.5) 65%,transparent)',pointerEvents:'none' }}/>
-
-          {/* ── BRAND with real logo ── */}
-          <a href="#hero" style={{ display:'flex',alignItems:'center',gap:10,textDecoration:'none',flexShrink:0 }}>
-            <div style={{ width:42,height:42,borderRadius:'50%',overflow:'hidden',border:'2px solid rgba(79,140,255,.35)',flexShrink:0,boxShadow:'0 0 16px rgba(79,140,255,.25)',position:'relative',display:'flex',alignItems:'center',justifyContent:'center',background:'#0d1633' }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo.png" alt="LaunchifyX Logo" style={{ width:60,height:60,objectFit:'contain' }}/>
-              <span style={{ position:'absolute',inset:-4,borderRadius:'50%',border:'1px solid rgba(255,184,0,.12)',animation:'pulse-ring 3s ease infinite',pointerEvents:'none' }}/>
-            </div>
+          {/* BRAND */}
+          <a href="#hero" style={{ display:'flex',alignItems:'center',gap:0,textDecoration:'none',flexShrink:0 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="LaunchifyX Logo" style={{ width:60,height:60,objectFit:'contain',flexShrink:0,margin:'-4px 0' }}/>
             <div style={{ display:'flex',flexDirection:'column',lineHeight:1 }}>
-              <span style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.05rem',fontWeight:800,color:dark?'#f0f2ff':'#0d0f20' }}>
-                Launchify<span style={{ background:'linear-gradient(135deg,#4f8cff,#ff8c00)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text' }}>X</span>
+              <span style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1rem',fontWeight:800,color:dark?'#faf5e8':'#1a1510' }}>
+                Launchify<span style={{ background:'linear-gradient(135deg,#ff4d00,#ffb800)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text' }}>X</span>
               </span>
-              <span style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.5rem',fontWeight:500,color:dark?'rgba(255,255,255,.35)':'rgba(0,0,50,.4)',letterSpacing:'.1em',marginTop:6,textTransform:'uppercase' }}>
+              <span style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.44rem',fontWeight:500,color:dark?'rgba(250,245,232,.3)':'rgba(26,21,16,.35)',letterSpacing:'.12em',marginTop:4,textTransform:'uppercase' }}>
                 Build Fast. Launch Faster
               </span>
             </div>
           </a>
 
-          {/* ── NAV LINKS (Desktop) ── */}
-          <ul style={{ display:'flex',gap:2,listStyle:'none',alignItems:'center' }}>
+          {/* NAV LINKS — desktop only */}
+          <ul className="nav-links-desktop" style={{ display:'flex',gap:0,listStyle:'none',alignItems:'center' }}>
             {LINKS.map(({ label, href }) => {
               const isActive = activeId === href.slice(1);
+              if (label === 'Services') return (
+                <li key={label} ref={svcRef} style={{ position:'relative' }}
+                  onMouseEnter={() => setSvcOpen(true)}
+                  onMouseLeave={() => setSvcOpen(false)}>
+                  <a href={href} style={{ fontFamily:"'Montserrat',sans-serif",fontSize:isActive?'.72rem':'.68rem',fontWeight:isActive?800:600,textTransform:'uppercase',letterSpacing:'.1em',color:isActive?linkActive:linkColor,textDecoration:'none',padding:'8px 14px',borderRadius:8,background:'transparent',transition:'color .2s',display:'inline-flex',alignItems:'center',gap:4 }}>
+                    {label}
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition:'transform .2s', transform: svcOpen ? 'rotate(180deg)' : 'none' }}><polyline points="6 9 12 15 18 9"/></svg>
+                  </a>
+                  {/* Dropdown */}
+                  <div style={{ position:'absolute', top:'100%', left:'50%', transform:'translateX(-50%)', paddingTop:8, opacity: svcOpen ? 1 : 0, visibility: svcOpen ? 'visible' : 'hidden', transition:'opacity .2s, visibility .2s', pointerEvents: svcOpen ? 'auto' : 'none', zIndex:400 }}>
+                    <div style={{ background: dark ? 'rgba(10,8,40,.97)' : 'rgba(255,255,255,.97)', border:`1px solid ${dark?'rgba(100,140,255,.15)':'rgba(0,0,0,.08)'}`, borderRadius:14, padding:'8px', backdropFilter:'blur(24px)', boxShadow:'0 16px 48px rgba(0,0,0,.2)', minWidth:260 }}>
+                      {SERVICE_ITEMS.map(svc => (
+                        <a key={svc.slug} href={`/services/${svc.slug}`}
+                          style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', borderRadius:9, textDecoration:'none', color: dark ? 'rgba(200,215,245,.8)' : '#3a3530', fontFamily:"'Montserrat',sans-serif", fontSize:'.75rem', fontWeight:600, transition:'background .15s, color .15s' }}
+                          onMouseEnter={e => { e.currentTarget.style.background = `${svc.color}14`; e.currentTarget.style.color = svc.color; }}
+                          onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = dark ? 'rgba(200,215,245,.8)' : '#3a3530'; }}>
+                          <span style={{ display:'flex', color:svc.color }}>{svc.icon}</span>
+                          {svc.label}
+                        </a>
+                      ))}
+                      <div style={{ borderTop:`1px solid ${dark?'rgba(100,140,255,.1)':'rgba(0,0,0,.06)'}`, margin:'6px 0' }}/>
+                      <a href="#services"
+                        style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:6, padding:'8px 12px', borderRadius:9, textDecoration:'none', color:'#ff4d00', fontFamily:"'Montserrat',sans-serif", fontSize:'.7rem', fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase', transition:'background .15s' }}
+                        onMouseEnter={e => e.currentTarget.style.background='rgba(255,77,0,.08)'}
+                        onMouseLeave={e => e.currentTarget.style.background='transparent'}>
+                        View All Services →
+                      </a>
+                    </div>
+                  </div>
+                </li>
+              );
               return (
                 <li key={label}>
-                  <a href={href} style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.7rem',fontWeight:600,textTransform:'uppercase',letterSpacing:'.1em',color:isActive?(dark?'#f0f2ff':'#0d0f20'):(dark?'rgba(255,255,255,.42)':'rgba(0,0,50,.45)'),textDecoration:'none',padding:'9px 14px',borderRadius:40,background:isActive?(dark?'rgba(255,255,255,.06)':'rgba(0,0,80,.06)'):'transparent',transition:'color .2s,background .2s',position:'relative',display:'inline-block' }}>
+                  <a href={href} style={{ fontFamily:"'Montserrat',sans-serif",fontSize:isActive?'.72rem':'.68rem',fontWeight:isActive?800:600,textTransform:'uppercase',letterSpacing:'.1em',color:isActive?linkActive:linkColor,textDecoration:'none',padding:'8px 14px',borderRadius:8,background:'transparent',transition:'color .2s,font-weight .2s,font-size .2s',display:'inline-flex',alignItems:'center' }}>
                     {label}
-                    {isActive && <span style={{ position:'absolute',bottom:4,left:'50%',transform:'translateX(-50%)',width:4,height:4,background:'#ff4d00',borderRadius:'50%',display:'block' }}/>}
                   </a>
                 </li>
               );
             })}
           </ul>
 
-          {/* ── RIGHT: socials + theme + CTA (Desktop) ── */}
-          <div style={{ display:'flex',alignItems:'center',gap:8 }}>
-            {/* divider */}
-            <div style={{ width:1,height:20,background:dark?'rgba(255,255,255,.09)':'rgba(0,0,80,.12)',margin:'0 4px' }}/>
+          {/* RIGHT */}
+          <div style={{ display:'flex',alignItems:'center',gap:6 }}>
 
-            {/* LinkedIn */}
-            <a href="https://www.linkedin.com/company/launchifyx" target="_blank" rel="noopener noreferrer"
-              title="LaunchifyX on LinkedIn"
-              style={{ width:34,height:34,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',border:`1px solid ${dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.12)'}`,transition:'all .2s',textDecoration:'none',background:'transparent' }}
-              onMouseEnter={e=>{ e.currentTarget.style.background='rgba(10,102,194,.15)'; e.currentTarget.style.color='#0a66c2'; e.currentTarget.style.borderColor='#0a66c2'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.background='transparent'; e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; e.currentTarget.style.borderColor=dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.12)'; }}>
-              <LiIcon/>
-            </a>
 
-            {/* Instagram */}
-            <a href="https://www.instagram.com/launchifyx" target="_blank" rel="noopener noreferrer"
-              title="@launchifyx on Instagram"
-              style={{ width:34,height:34,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',border:`1px solid ${dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.12)'}`,transition:'all .2s',textDecoration:'none',background:'transparent' }}
-              onMouseEnter={e=>{ e.currentTarget.style.background='rgba(225,48,108,.12)'; e.currentTarget.style.color='#e1306c'; e.currentTarget.style.borderColor='#e1306c'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.background='transparent'; e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; e.currentTarget.style.borderColor=dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.12)'; }}>
-              <IgIcon/>
-            </a>
-
-            {/* divider */}
-            <div style={{ width:1,height:20,background:dark?'rgba(255,255,255,.09)':'rgba(0,0,80,.12)',margin:'0 4px' }}/>
-
-            {/* Dark/Light toggle */}
+            {/* Theme toggle */}
             <button onClick={toggle}
-              title={dark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              style={{ width:36,height:36,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',border:`1px solid ${dark?'rgba(255,255,255,.12)':'rgba(0,0,80,.15)'}`,background:dark?'rgba(255,184,0,.08)':'rgba(79,140,255,.08)',color:dark?'#ffb800':'#4f8cff',cursor:'pointer',transition:'all .2s',flexShrink:0 }}
-              onMouseEnter={e=>{ e.currentTarget.style.transform='rotate(20deg) scale(1.1)'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.transform=''; }}>
+              title={dark ? 'Light mode' : 'Dark mode'}
+              style={{ width:32,height:32,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',border:`1px solid ${navBorder}`,background:'transparent',color:dark?'#ffb800':'#4f8cff',cursor:'pointer',transition:'all .2s',flexShrink:0 }}
+              onMouseEnter={e=>{ e.currentTarget.style.background=dark?'rgba(255,184,0,.1)':'rgba(79,140,255,.1)'; e.currentTarget.style.transform='rotate(15deg)'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background='transparent'; e.currentTarget.style.transform=''; }}>
               {dark ? <SunIcon/> : <MoonIcon/>}
             </button>
 
-            {/* CTA */}
-            <a href="#contact" style={{ background:'linear-gradient(135deg,#4f8cff,#ff4d00)',color:'#fff',textDecoration:'none',fontFamily:"'Montserrat',sans-serif",fontSize:'.7rem',fontWeight:700,letterSpacing:'.09em',textTransform:'uppercase',padding:'11px 18px',borderRadius:40,display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap',boxShadow:'0 4px 20px rgba(255,77,0,.4)',transition:'transform .2s,box-shadow .2s' }}
-              onMouseEnter={e=>{ e.currentTarget.style.transform='scale(1.04)'; e.currentTarget.style.boxShadow='0 8px 28px rgba(255,77,0,.55)'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 4px 20px rgba(255,77,0,.4)'; }}>
+            {/* CTA — desktop only */}
+            <a href="/consultation" className="nav-cta-desktop"
+              style={{ background:'linear-gradient(135deg,#ff4d00,#c73b00)',color:'#fff',textDecoration:'none',fontFamily:"'Montserrat',sans-serif",fontSize:'.66rem',fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',padding:'9px 18px',borderRadius:8,display:'flex',alignItems:'center',gap:6,whiteSpace:'nowrap',transition:'opacity .2s,transform .2s',marginLeft:4 }}
+              onMouseEnter={e=>{ e.currentTarget.style.opacity='.88'; e.currentTarget.style.transform='translateY(-1px)'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.opacity='1'; e.currentTarget.style.transform=''; }}>
               Get Started →
             </a>
 
-            {/* Hamburger (mobile) */}
-            <button onClick={()=>setMenuOpen(!menuOpen)}
-              style={{ display:'none',flexDirection:'column',gap:5,cursor:'pointer',padding:8,background:'transparent',border:'none' }}>
-              <span style={{ display:'block',width:20,height:2,background:dark?'#f0f2ff':'#0d0f20',borderRadius:2 }}/>
-              <span style={{ display:'block',width:20,height:2,background:dark?'#f0f2ff':'#0d0f20',borderRadius:2 }}/>
-              <span style={{ display:'block',width:20,height:2,background:dark?'#f0f2ff':'#0d0f20',borderRadius:2 }}/>
+            {/* Hamburger — mobile/tablet only */}
+            <button className="nav-hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Open menu"
+              style={{ flexDirection:'column',gap:4,cursor:'pointer',padding:6,background:'transparent',border:'none',flexShrink:0,marginLeft:2 }}>
+              <span style={{ display:'block',width:20,height:2,background:dark?'#faf5e8':'#1a1510',borderRadius:2,transition:'transform .3s,opacity .3s',transform:menuOpen?'translateY(6px) rotate(45deg)':'none' }}/>
+              <span style={{ display:'block',width:20,height:2,background:dark?'#faf5e8':'#1a1510',borderRadius:2,transition:'opacity .3s',opacity:menuOpen?0:1 }}/>
+              <span style={{ display:'block',width:20,height:2,background:dark?'#faf5e8':'#1a1510',borderRadius:2,transition:'transform .3s,opacity .3s',transform:menuOpen?'translateY(-6px) rotate(-45deg)':'none' }}/>
             </button>
           </div>
         </nav>
+        </div>
       </div>
 
-      {/* ── MOBILE MENU OVERLAY ── */}
+      {/* ── MOBILE / TABLET MENU OVERLAY ── */}
       <div style={{
         position:'fixed',
         inset:0,
-        background:dark?'rgba(5,7,15,.98)':'rgba(240,242,255,.98)',
+        background:dark?'rgba(18,16,61,.98)':'rgba(250,248,243,.98)',
         backdropFilter:'blur(20px)',
         zIndex:299,
         opacity:menuOpen?1:0,
         visibility:menuOpen?'visible':'hidden',
-        transition:'opacity .4s ease, visibility .4s ease'
+        transition:'opacity .35s ease, visibility .35s ease',
+        overflowY:'auto',
       }}>
-        {/* Animated background */}
-        <div style={{
-          position:'absolute',
-          top:'50%',
-          left:'50%',
-          width:'600px',
-          height:'600px',
-          background:'radial-gradient(circle, rgba(79,140,255,.1) 0%, transparent 70%)',
-          borderRadius:'50%',
-          transform:'translate(-50%, -50%)',
-          filter:'blur(80px)',
-          animation:'orb-pulse 8s ease infinite'
-        }}/>
+        {/* bg orb */}
+        <div style={{ position:'absolute',top:'40%',left:'50%',width:'500px',height:'500px',background:'radial-gradient(circle, rgba(79,140,255,.08) 0%, transparent 70%)',borderRadius:'50%',transform:'translate(-50%,-50%)',filter:'blur(80px)',pointerEvents:'none' }}/>
 
-        {/* Close Button */}
-        <button
-          onClick={()=>setMenuOpen(false)}
-          style={{
-            position:'absolute',
-            top:20,
-            right:20,
-            width:44,
-            height:44,
-            borderRadius:'50%',
-            background:dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)',
-            border:`1px solid ${dark?'rgba(255,255,255,.12)':'rgba(0,0,80,.12)'}`,
-            color:dark?'#f0f2ff':'#0d0f20',
-            cursor:'pointer',
-            display:'flex',
-            alignItems:'center',
-            justifyContent:'center',
-            transition:'all .3s'
-          }}
-          onMouseEnter={e=>{ e.currentTarget.style.transform='rotate(90deg) scale(1.1)'; e.currentTarget.style.background=dark?'rgba(255,77,0,.15)':'rgba(255,77,0,.1)'; }}
-          onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.background=dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)'; }}
-        >
+        {/* Close button */}
+        <button onClick={() => setMenuOpen(false)}
+          style={{ position:'absolute',top:20,right:20,width:44,height:44,borderRadius:'50%',background:dark?'rgba(255,255,255,.08)':'rgba(0,0,80,.08)',border:`1px solid ${dark?'rgba(255,255,255,.12)':'rgba(0,0,80,.12)'}`,color:dark?'#f0f2ff':'#0d0f20',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',transition:'all .3s' }}
+          onMouseEnter={e=>{ e.currentTarget.style.transform='rotate(90deg) scale(1.1)'; }}
+          onMouseLeave={e=>{ e.currentTarget.style.transform=''; }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         </button>
 
-        {/* Menu Content */}
-        <div style={{
-          display:'flex',
-          flexDirection:'column',
-          alignItems:'center',
-          justifyContent:'center',
-          height:'100%',
-          gap:8
-        }}>
-          {LINKS.map(({ label, href }, index) => {
+        {/* Menu content */}
+        <div style={{ display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',minHeight:'100%',padding:'80px 24px 40px',gap:4 }}>
+
+          {/* Nav links */}
+          {LINKS.map(({ label, href }, i) => {
             const isActive = activeId === href.slice(1);
             return (
-              <a
-                key={label}
-                href={href}
-                onClick={()=>setMenuOpen(false)}
-                style={{
-                  fontFamily:"'Exo 2',sans-serif",
-                  fontSize:'clamp(1.8rem, 5vw, 2.5rem)',
-                  fontWeight:800,
-                  color:isActive?'#ff4d00':(dark?'#f0f2ff':'#0d0f20'),
-                  textDecoration:'none',
-                  padding:'12px 24px',
-                  borderRadius:16,
-                  background:isActive?(dark?'rgba(255,77,0,.1)':'rgba(255,77,0,.08)'):'transparent',
-                  transition:'all .3s ease',
-                  opacity:menuOpen?1:0,
-                  transform:menuOpen?'translateY(0)':'translateY(30px)',
-                  transitionDelay:`${index * 0.08}s`,
-                  position:'relative'
-                }}
-                onMouseEnter={e=>{ e.currentTarget.style.transform='translateX(10px)'; e.currentTarget.style.background=dark?'rgba(79,140,255,.1)':'rgba(79,140,255,.08)'; }}
-                onMouseLeave={e=>{ e.currentTarget.style.transform='translateX(0)'; e.currentTarget.style.background=isActive?(dark?'rgba(255,77,0,.1)':'rgba(255,77,0,.08)'):'transparent'; }}
-              >
+              <a key={label} href={href} onClick={() => setMenuOpen(false)}
+                style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'clamp(1.6rem,5vw,2.4rem)',fontWeight:800,color:dark?'#f0f2ff':'#0d0f20',textDecoration:'none',padding:'10px 28px',borderRadius:16,width:'100%',maxWidth:360,textAlign:'center',background:'transparent',transition:'all .3s ease',opacity:menuOpen?1:0,transform:menuOpen?'translateY(0)':'translateY(20px)',transitionDelay:`${i*0.07}s` }}>
                 {label}
-                {isActive && <span style={{ position:'absolute',right:8,top:'50%',transform:'translateY(-50%)',width:6,height:6,background:'#ff4d00',borderRadius:'50%',display:'block' }}/>}
               </a>
             );
           })}
 
-          {/* Mobile CTA */}
-          <a
-            href="#contact"
-            onClick={()=>setMenuOpen(false)}
-            style={{
-              marginTop:30,
-              padding:'16px 40px',
-              background:'linear-gradient(135deg,#4f8cff,#ff4d00)',
-              color:'#fff',
-              textDecoration:'none',
-              fontFamily:"'Montserrat',sans-serif",
-              fontSize:'0.85rem',
-              fontWeight:700,
-              textTransform:'uppercase',
-              letterSpacing:'.1em',
-              borderRadius:50,
-              boxShadow:'0 8px 30px rgba(79,140,255,.4)',
-              transition:'all .3s ease',
-              opacity:menuOpen?1:0,
-              transform:menuOpen?'translateY(0)':'translateY(30px)',
-              transitionDelay:'0.4s'
-            }}
-            onMouseEnter={e=>{ e.currentTarget.style.transform='scale(1.05)'; e.currentTarget.style.boxShadow='0 12px 40px rgba(79,140,255,.5)'; }}
-            onMouseLeave={e=>{ e.currentTarget.style.transform=''; e.currentTarget.style.boxShadow='0 8px 30px rgba(79,140,255,.4)'; }}
-          >
+          {/* Divider */}
+          <div style={{ width:60,height:1,background:dark?'rgba(255,255,255,.1)':'rgba(0,0,80,.1)',margin:'16px 0',opacity:menuOpen?1:0,transition:'opacity .3s .28s' }}/>
+
+          {/* Socials row */}
+          <div style={{ display:'flex',gap:14,opacity:menuOpen?1:0,transform:menuOpen?'translateY(0)':'translateY(20px)',transition:'all .3s ease .3s' }}>
+            {navSocials.linkedin && <a href={navSocials.linkedin} target="_blank" rel="noopener noreferrer"
+              style={{ width:44,height:44,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#0a66c2',border:'1px solid rgba(10,102,194,.3)',background:'rgba(10,102,194,.08)',textDecoration:'none',transition:'all .2s' }}
+              onMouseEnter={e=>{ e.currentTarget.style.background='rgba(10,102,194,.2)'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background='rgba(10,102,194,.08)'; }}>
+              <LiIcon/>
+            </a>}
+            {navSocials.instagram && <a href={navSocials.instagram} target="_blank" rel="noopener noreferrer"
+              style={{ width:44,height:44,borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:'#e1306c',border:'1px solid rgba(225,48,108,.3)',background:'rgba(225,48,108,.08)',textDecoration:'none',transition:'all .2s' }}
+              onMouseEnter={e=>{ e.currentTarget.style.background='rgba(225,48,108,.2)'; }}
+              onMouseLeave={e=>{ e.currentTarget.style.background='rgba(225,48,108,.08)'; }}>
+              <IgIcon/>
+            </a>}
+          </div>
+
+          {/* CTA */}
+          <a href="/consultation" onClick={() => setMenuOpen(false)}
+            style={{ marginTop:24,padding:'15px 44px',background:'linear-gradient(135deg,#4f8cff,#ff4d00)',color:'#fff',textDecoration:'none',fontFamily:"'Montserrat',sans-serif",fontSize:'.85rem',fontWeight:700,textTransform:'uppercase',letterSpacing:'.1em',borderRadius:50,boxShadow:'0 8px 30px rgba(79,140,255,.35)',opacity:menuOpen?1:0,transform:menuOpen?'translateY(0)':'translateY(20px)',transition:'all .3s ease .36s' }}>
             Get Started →
           </a>
-
-          {/* Social Links */}
-          <div style={{
-            display:'flex',
-            gap:16,
-            marginTop:40,
-            opacity:menuOpen?1:0,
-            transform:menuOpen?'translateY(0)':'translateY(30px)',
-            transitionDelay:'0.5s'
-          }}>
-            <a href="https://www.linkedin.com/company/launchifyx" target="_blank" rel="noopener noreferrer"
-              style={{ color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',transition:'color .2s' }}
-              onMouseEnter={e=>{ e.currentTarget.style.color='#0a66c2'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; }}>
-              <LiIcon/>
-            </a>
-            <a href="https://www.instagram.com/launchifyx" target="_blank" rel="noopener noreferrer"
-              style={{ color:dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)',transition:'color .2s' }}
-              onMouseEnter={e=>{ e.currentTarget.style.color='#e1306c'; }}
-              onMouseLeave={e=>{ e.currentTarget.style.color=dark?'rgba(255,255,255,.5)':'rgba(0,0,80,.5)'; }}>
-              <IgIcon/>
-            </a>
-          </div>
         </div>
       </div>
 
-      {/* ── RESPONSIVE STYLES ── */}
       <style>{`
+        /* Desktop: show links + socials + CTA, hide hamburger */
+        @media (min-width: 961px) {
+          .nav-links-desktop  { display: flex !important; }
+          .nav-socials-desktop { display: flex !important; }
+          .nav-cta-desktop    { display: flex !important; }
+          .nav-hamburger      { display: none !important; }
+        }
+        /* Tablet + Mobile: hide desktop items, show hamburger */
         @media (max-width: 960px) {
-          nav ul { display: none !important; }
-          nav > div > a[href="#contact"] { display: none !important; }
-          nav > div > button[style*="display:'none'"] { display: flex !important; }
+          .nav-links-desktop  { display: none !important; }
+          .nav-socials-desktop { display: none !important; }
+          .nav-cta-desktop    { display: none !important; }
+          .nav-hamburger      { display: flex !important; }
+        }
+        /* Tighter nav pill on small screens */
+        @media (max-width: 500px) {
+          .nav-wrapper { width: calc(100% - 24px) !important; }
         }
       `}</style>
     </>
