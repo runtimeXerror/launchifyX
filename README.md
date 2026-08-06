@@ -1,73 +1,105 @@
-# 🚀 LaunchifyX — React Frontend
+# LaunchifyX
 
-Component-based React app. **Zero extra dependencies** — only `react`, `react-dom`, `react-scripts`.
+Marketing site + admin dashboard for **LaunchifyX** — a startup/agency that builds websites, apps, e-commerce stores and brands.
 
----
+Built as a single **Next.js full-stack** app: the frontend (landing page UI) and the backend (API + database) live in one project, cleanly separated by directory.
 
-## 📁 Structure
+## Tech stack
+
+| Layer        | Tech                                  |
+| ------------ | ------------------------------------- |
+| Frontend     | Next.js 14 (App Router), React 18, TypeScript |
+| Backend      | Next.js Route Handlers (`src/app/api`) |
+| Database     | PostgreSQL via Prisma ORM             |
+| Styling      | Global CSS + inline styles, dark/light theme |
+
+## Project structure
 
 ```
-src/
-├── App.jsx
-├── index.js
-├── styles/global.css
-└── components/
-    ├── Navbar.jsx
-    ├── Hero.jsx
-    ├── Ticker.jsx
-    ├── Services.jsx
-    ├── Pricing.jsx
-    ├── Testimonials.jsx
-    ├── Contact.jsx
-    ├── Footer.jsx
-    └── useReveal.js
+launchifyX/
+├── prisma/
+│   ├── schema.prisma        # ← DATABASE: models (User, Service, PricingPlan, ClientRequest)
+│   └── seed.ts              # seeds demo services + pricing plans
+├── public/                  # static assets (logo, favicon)
+├── src/
+│   ├── app/
+│   │   ├── layout.tsx       # root layout + ThemeProvider
+│   │   ├── page.tsx         # landing page (composes the components below)
+│   │   ├── globals.css
+│   │   ├── admin/page.tsx   # admin dashboard
+│   │   └── api/             # ← BACKEND (API route handlers)
+│   │       ├── clients/         GET, POST   (+ [id]: PUT, DELETE)
+│   │       ├── pricing/         GET, POST   (+ [id]: PUT, DELETE)
+│   │       ├── services/        GET, POST
+│   │       └── analytics/overview/  GET
+│   ├── components/          # ← FRONTEND (Navbar, Hero, Pricing, Contact, …)
+│   ├── context/             # ThemeContext (dark/light)
+│   └── lib/prisma.ts        # Prisma client singleton
+├── .env.example
+└── next.config.mjs
 ```
 
----
+## Getting started
 
-## 🖥️ Run Locally
+### 1. Install dependencies
 
 ```bash
 npm install
-npm start
 ```
 
----
+### 2. Configure the database
 
-## 🐙 GitHub Upload (No node_modules needed!)
-
-`node_modules` is in `.gitignore` — **never upload it**.
+Copy `.env.example` to `.env` and set `DATABASE_URL` to your PostgreSQL connection string
+(local Postgres, or a free hosted DB like [Neon](https://neon.tech) / Supabase / Vercel Postgres).
 
 ```bash
-git init
-git add .
-git commit -m "Initial LaunchifyX commit"
-git remote add origin https://github.com/YOUR_USERNAME/launchifyx.git
-git push -u origin main
+cp .env.example .env
 ```
 
----
+### 3. Create the schema + seed demo data
 
-## ▲ Deploy on Vercel (Free)
+```bash
+npm run db:push    # create tables from prisma/schema.prisma
+npm run db:seed    # insert demo services & pricing plans
+```
 
-1. Go to https://vercel.com → Sign in with GitHub
-2. Click **"Add New Project"**
-3. Import your **launchifyx** GitHub repo
-4. Vercel auto-detects React → settings will be:
-   - **Framework:** Create React App
-   - **Build Command:** `npm run build`
-   - **Output Directory:** `build`
-5. Click **Deploy** ✅
+### 4. Run the dev server
 
-Vercel runs `npm install` + `npm run build` automatically.
-**You never need to upload node_modules.**
+```bash
+npm run dev
+```
 
----
+- Site: <http://localhost:3000>
+- Admin: <http://localhost:3000/admin>
 
-## ⚠️ Common Vercel Error Fixes
+The contact form submits to `POST /api/clients`, which writes to the database;
+new submissions then show up in the admin dashboard.
 
-| Error | Fix |
-|-------|-----|
-| `Module not found` | Make sure all import paths use correct case |
-| `react-scripts not found` | Vercel must install deps — check package.json has `react-scripts` in `dependencies` (not `devDependencies`) |
-| Build fails | Check Vercel logs → Environment → set Node version to **18.x** |
+## Scripts
+
+| Command             | Description                          |
+| ------------------- | ------------------------------------ |
+| `npm run dev`       | Start the dev server                 |
+| `npm run build`     | `prisma generate` + production build |
+| `npm start`         | Run the production build             |
+| `npm run db:push`   | Push the Prisma schema to the DB     |
+| `npm run db:seed`   | Seed demo data                       |
+| `npm run db:studio` | Open Prisma Studio (DB GUI)          |
+
+## API reference
+
+| Method | Route                     | Description                |
+| ------ | ------------------------- | -------------------------- |
+| GET    | `/api/clients`            | List all client requests   |
+| POST   | `/api/clients`            | Create a request (contact) |
+| PUT    | `/api/clients/:id`        | Update status / notes      |
+| DELETE | `/api/clients/:id`        | Delete a request           |
+| GET    | `/api/services`           | List active services       |
+| POST   | `/api/services`           | Create a service           |
+| GET    | `/api/pricing`            | List active pricing plans  |
+| POST   | `/api/pricing`            | Create a pricing plan      |
+| PUT    | `/api/pricing/:id`        | Update a pricing plan      |
+| DELETE | `/api/pricing/:id`        | Delete a pricing plan      |
+| GET    | `/api/analytics/overview` | Dashboard summary stats    |
+
+
