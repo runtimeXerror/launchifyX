@@ -74,7 +74,7 @@ function PlanCard({ plan }: { plan: Plan }) {
         <span style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.66rem',fontWeight:700,letterSpacing:'.2em',textTransform:'uppercase',color:'#ff4d00' }}>{plan.name}</span>
       </div>
 
-      <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'clamp(1.8rem,4vw,3rem)',fontWeight:800,lineHeight:1,marginBottom:4,letterSpacing:'-.02em',color:plan.feat?'#ff4d00':(dark?'#ffffff':'#0d0f20'),wordBreak:'break-all' }}>
+      <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'clamp(1.8rem,4vw,3rem)',fontWeight:800,lineHeight:1,marginBottom:4,letterSpacing:'-.02em',color:plan.feat?'#ff4d00':(dark?'#ffffff':'#0d0f20'),whiteSpace:'nowrap' }}>
         <sup style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'1.2rem',verticalAlign:'super',fontWeight:600 }}>₹</sup>
         {plan.price}
       </div>
@@ -121,7 +121,7 @@ export default function Pricing() {
       </div>
 
       {/* Custom plan CTA */}
-      <div style={{ textAlign:'center',padding:'32px 40px',background:dark?'rgba(79,140,255,.06)':'rgba(79,140,255,.05)',border:`1px solid ${dark?'rgba(79,140,255,.15)':'rgba(79,140,255,.2)'}`,borderRadius:16,maxWidth:700,margin:'56px auto 0' }}>
+      <div className="pricing-custom" style={{ textAlign:'center',padding:'32px clamp(18px,5vw,40px)',background:dark?'rgba(79,140,255,.06)':'rgba(79,140,255,.05)',border:`1px solid ${dark?'rgba(79,140,255,.15)':'rgba(79,140,255,.2)'}`,borderRadius:16,maxWidth:700,margin:'56px auto 0' }}>
         <div style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'1.2rem',fontWeight:800,marginBottom:8,color:dark?'#ffffff':'#0d0f20',display:'flex',alignItems:'center',justifyContent:'center',gap:8 }}><ToolsIcon size={20} color="#ff4d00"/> Need a Custom Package?</div>
         <p style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.88rem',color:'#6c7591',marginBottom:22,lineHeight:1.7 }}>Have specific requirements or a tight budget? We&apos;ll build a package exactly for you — no bloat, no overpaying.</p>
         <a href="#contact" className="btn-primary" style={{ fontSize:'.76rem' }}>Talk to Us → Get Custom Quote</a>

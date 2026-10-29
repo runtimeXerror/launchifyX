@@ -126,7 +126,7 @@ export default function ConsultationPage() {
             </div>
           ))}
         </div>
-        <div style={{ display:'flex', gap:10, justifyContent:'center' }}>
+        <div style={{ display:'flex', gap:10, justifyContent:'center', flexWrap:'wrap' }}>
           <button onClick={() => router.push('/')}
             style={{ padding:'11px 24px', borderRadius:10, border:`1px solid ${border}`, background:'transparent', color:muted, cursor:'pointer', fontFamily:"'Montserrat',sans-serif", fontWeight:600, fontSize:'.82rem' }}>
             Back to Home
@@ -148,7 +148,7 @@ export default function ConsultationPage() {
 
       {/* Top bar */}
       <div style={{ position:'sticky', top:0, zIndex:100, background: dark?'rgba(8,13,26,.9)':'rgba(250,248,243,.92)', backdropFilter:'blur(20px)', borderBottom:`1px solid ${border}` }}>
-        <div style={{ maxWidth:720, margin:'0 auto', padding:'0 24px', height:56, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <div className="consult-topbar" style={{ maxWidth:720, margin:'0 auto', padding:'0 24px', height:56, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
           <button onClick={() => router.push('/')}
             style={{ display:'inline-flex', alignItems:'center', gap:6, background:'none', border:'none', color:muted, cursor:'pointer', fontFamily:"'Montserrat',sans-serif", fontSize:'.8rem', fontWeight:600 }}>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -157,11 +157,11 @@ export default function ConsultationPage() {
           <span style={{ fontFamily:"'Exo 2',sans-serif", fontSize:'.85rem', fontWeight:800, color:text }}>
             Launchify<span style={{ color:ACCENT }}>X</span>
           </span>
-          <span style={{ fontSize:'.72rem', color:muted, fontWeight:600 }}>Free Consultation</span>
+          <span className="consult-topbar-tag" style={{ fontSize:'.72rem', color:muted, fontWeight:600 }}>Free Consultation</span>
         </div>
       </div>
 
-      <div style={{ maxWidth:680, margin:'0 auto', padding:'48px 24px 80px', position:'relative', zIndex:1 }}>
+      <div className="consult-wrap" style={{ maxWidth:680, margin:'0 auto', padding:'48px 24px 80px', position:'relative', zIndex:1 }}>
 
         {/* Header */}
         <div style={{ textAlign:'center', marginBottom:40 }}>
@@ -178,13 +178,13 @@ export default function ConsultationPage() {
         </div>
 
         {/* Step indicators */}
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:0, marginBottom:36 }}>
+        <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'center', gap:0, marginBottom:36 }}>
           {STEPS.map((label, i) => {
             const num = i + 1;
             const active = step === num;
             const done_ = step > num;
             return (
-              <div key={label} style={{ display:'flex', alignItems:'center' }}>
+              <div key={label} style={{ display:'flex', alignItems:'flex-start' }}>
                 <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:4 }}>
                   <div style={{ width:36, height:36, borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Exo 2',sans-serif", fontWeight:900, fontSize:'.8rem', transition:'all .3s',
                     background: done_ ? ACCENT : active ? `${ACCENT}20` : dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.06)',
@@ -192,10 +192,10 @@ export default function ConsultationPage() {
                     color: done_ ? '#fff' : active ? ACCENT : muted }}>
                     {done_ ? <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg> : num}
                   </div>
-                  <span style={{ fontSize:'.56rem', fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color: active ? ACCENT : muted, whiteSpace:'nowrap' }}>{label}</span>
+                  <span className="consult-step-label" style={{ fontSize:'.56rem', fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color: active ? ACCENT : muted, whiteSpace:'nowrap' }}>{label}</span>
                 </div>
                 {i < STEPS.length - 1 && (
-                  <div style={{ width:80, height:2, background: step > num ? ACCENT : border, margin:'0 8px', marginBottom:18, transition:'background .4s' }}/>
+                  <div className="consult-steps-line" style={{ width:80, height:2, background: step > num ? ACCENT : border, margin:'17px 8px 0', transition:'background .4s' }}/>
                 )}
               </div>
             );
@@ -203,13 +203,13 @@ export default function ConsultationPage() {
         </div>
 
         {/* Card */}
-        <div style={{ background:card, border:`1px solid ${border}`, borderRadius:20, padding:'32px', backdropFilter:'blur(12px)', boxShadow: dark?'0 20px 60px rgba(0,0,0,.3)':'0 8px 40px rgba(0,0,0,.08)' }}>
+        <div className="consult-card" style={{ background:card, border:`1px solid ${border}`, borderRadius:20, padding:'32px', backdropFilter:'blur(12px)', boxShadow: dark?'0 20px 60px rgba(0,0,0,.3)':'0 8px 40px rgba(0,0,0,.08)' }}>
 
           {/* ── STEP 1: Your Info ── */}
           {step === 1 && (
             <div style={{ display:'flex', flexDirection:'column', gap:20 }}>
               <StepTitle title="Tell us who you are" sub="We'll use this to get in touch with you." dark={dark} text={text} muted={muted}/>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+              <div className="consult-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
                 <div>
                   <label style={labelStyle}>Full Name *</label>
                   <input value={f.name} onChange={e=>set('name',e.target.value)} placeholder="Your name"
@@ -253,7 +253,7 @@ export default function ConsultationPage() {
                   {SERVICES.map(s => <option key={s} value={s}>{s}</option>)}
                 </select>
               </div>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
+              <div className="consult-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:16 }}>
                 <div>
                   <label style={labelStyle}>Approximate Budget</label>
                   <select value={f.budget} onChange={e=>set('budget',e.target.value)}
@@ -317,7 +317,7 @@ export default function ConsultationPage() {
           {error && <div style={{ marginTop:12, padding:'10px 14px', borderRadius:8, background:'rgba(255,77,0,.08)', border:'1px solid rgba(255,77,0,.2)', color:ACCENT, fontSize:'.8rem', fontWeight:600 }}>{error}</div>}
 
           {/* Buttons */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginTop:28 }}>
+          <div className="consult-actions" style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:10, marginTop:28 }}>
             {step > 1
               ? <button onClick={() => setStep(s=>s-1)} style={{ padding:'11px 22px', borderRadius:10, border:`1px solid ${border}`, background:'transparent', color:muted, cursor:'pointer', fontFamily:"'Montserrat',sans-serif", fontWeight:600, fontSize:'.82rem' }}>← Back</button>
               : <div/>
@@ -351,14 +351,8 @@ export default function ConsultationPage() {
 
       </div>
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800;900&family=Montserrat:wght@400;500;600;700;800&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        select option { background: ${dark ? '#12103d' : '#fff'}; }
-        @media (max-width: 520px) {
-          .consult-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
+      {/* fonts + reset come from globals.css; dangerouslySetInnerHTML avoids a hydration mismatch on escaped CSS */}
+      <style dangerouslySetInnerHTML={{ __html: `select option { background: ${dark ? '#12103d' : '#fff'}; }` }}/>
     </div>
   );
 }

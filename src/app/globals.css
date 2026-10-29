@@ -139,13 +139,33 @@ main {
    RESPONSIVE — Tablet (≤960px) + Mobile (≤600px)
    ══════════════════════════════════════════ */
 
+/* ── Small laptop / tablet landscape (≤1199px) ── */
+@media (max-width: 1199px) {
+  /* Hero: drop the floating stat cards, keep text + tech stack side by side */
+  .hero-layout  { grid-template-columns: 1fr 1fr !important; }
+  .hero-right   { display: none !important; }
+
+  /* Pricing: 5 columns get too narrow — wrap 3 + 2, centered */
+  .pricing-grid { display: flex !important; flex-wrap: wrap !important; justify-content: center !important; gap: 28px 16px !important; }
+  .pricing-grid > * { flex: 0 1 calc(33.333% - 11px); min-width: 0; }
+
+  /* Testimonials: side cards collide with the active card */
+  .testi-side   { display: none !important; }
+}
+
 /* ── Tablet (≤960px) ── */
 @media (max-width: 960px) {
   /* Hero */
   .hero-layout  { grid-template-columns: 1fr !important; gap: 32px !important; }
   .hero-right   { display: none !important; }
-  #hero         { padding-top: 80px !important; padding-bottom: 40px !important; justify-content: flex-start !important; height: auto !important; min-height: 100vh !important; overflow: visible !important; }
+  #hero         { padding-top: 80px !important; padding-bottom: 40px !important; justify-content: flex-start !important; height: auto !important; min-height: 100vh !important; overflow: hidden !important; }
   .hero-pills   { justify-content: center !important; }
+  .hero-left    { text-align: center; }
+  .hero-left p  { margin-left: auto !important; margin-right: auto !important; }
+  .hero-btns, .hero-proof { justify-content: center !important; }
+
+  /* Pricing: 2 per row */
+  .pricing-grid > * { flex-basis: calc(50% - 8px); max-width: 420px; }
 
   /* All headings center */
   .sec-label    { justify-content: center !important; }
@@ -153,8 +173,10 @@ main {
   .sec-sub      { text-align: center !important; margin-left: auto !important; margin-right: auto !important; }
   h1, h2, h3   { text-align: center !important; }
   .contact-heading { text-align: center !important; }
-  .contact-grid > div:first-child { align-items: center !important; }
-  .contact-grid p  { text-align: center !important; }
+  .contact-left { text-align: center; }
+  .contact-left > p { margin-left: auto !important; margin-right: auto !important; }
+  .contact-cta  { text-align: left; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .contact-info { width: fit-content; max-width: 100%; margin: 0 auto; text-align: left; }
 
   /* Testi title one line */
   .testi-title  { white-space: nowrap !important; font-size: clamp(1.4rem, 4vw, 3.4rem) !important; }
@@ -170,9 +192,6 @@ main {
   /* Portfolio */
   .portfolio-grid { grid-template-columns: repeat(2,1fr) !important; gap: 20px !important; }
 
-  /* Pricing — 2+3 col on tablet */
-  .pricing-grid { grid-template-columns: repeat(3,1fr) !important; gap: 14px !important; }
-
   /* Testimonials */
   .testi-side   { display: none !important; }
   .testi-active { padding: 28px 24px !important; }
@@ -182,6 +201,12 @@ main {
 
   /* Footer */
   .footer-top   { flex-wrap: wrap !important; gap: 32px !important; }
+  .footer-bottom { grid-template-columns: minmax(0,1fr) !important; gap: 24px !important; }
+  .footer-bottom > div:first-child { align-items: center !important; }
+  .footer-bottom > div:first-child > div { justify-content: center; }
+  .footer-bottom > div:last-child  { align-items: center !important; }
+  .footer-bottom p { justify-content: center; text-align: center !important; flex-wrap: wrap; }
+  .footer-newsletter { min-width: unset !important; max-width: 420px !important; width: 100% !important; margin: 0 auto; }
 
   /* Section padding */
   section { padding-left: 20px !important; padding-right: 20px !important; }
@@ -192,7 +217,7 @@ main {
   /* Hero */
   .hero-layout  { grid-template-columns: 1fr !important; }
   .hero-center  { display: none !important; }
-  #hero         { padding-top: 88px !important; padding-bottom: 36px !important; height: auto !important; min-height: 100vh !important; overflow: visible !important; justify-content: flex-start !important; }
+  #hero         { padding-top: 88px !important; padding-bottom: 36px !important; height: auto !important; min-height: 100vh !important; overflow: hidden !important; justify-content: flex-start !important; }
   .hero-pills   { gap: 6px !important; justify-content: center !important; }
   /* show stats pill on mobile too, let it wrap */
   .hero-pills-stats { display: inline-flex !important; }
@@ -221,7 +246,8 @@ main {
   .portfolio-grid { grid-template-columns: 1fr !important; gap: 16px !important; }
 
   /* Pricing */
-  .pricing-grid { grid-template-columns: 1fr !important; gap: 14px !important; }
+  .pricing-grid { gap: 28px !important; }
+  .pricing-grid > * { flex-basis: 100%; max-width: 440px; }
 
   /* Testimonials */
   .testi-side   { display: none !important; }
@@ -239,9 +265,15 @@ main {
   /* Buttons */
   .btn-primary, .btn-outline { padding: 12px 22px !important; font-size: .7rem !important; width: 100% !important; justify-content: center !important; }
 
+  /* Forms: 16px inputs stop iOS Safari from zooming in on focus */
+  input, select, textarea { font-size: 16px !important; }
+
   /* Footer */
   .footer-top   { flex-direction: column !important; gap: 28px !important; }
   footer        { padding: 48px 16px 28px !important; }
+  .footer-stats   { grid-template-columns: repeat(2,1fr) !important; }
+  .footer-cta-row { flex-direction: column !important; align-items: stretch !important; }
+  .footer-cta-row a { justify-content: center !important; }
 }
 
 /* ── Small phones (≤380px) ── */
@@ -249,6 +281,38 @@ main {
   section       { padding-left: 12px !important; padding-right: 12px !important; }
   footer        { padding-left: 12px !important; padding-right: 12px !important; }
   .testi-active { padding: 20px 16px !important; }
+}
+
+/* ── Service detail page (/services/[slug]) ── */
+@media (max-width: 860px) {
+  .svc-hero-grid  { grid-template-columns: 1fr !important; gap: 32px !important; padding: 36px 0 44px !important; margin-bottom: 48px !important; }
+  .svc-scroll-hint { display: none !important; }
+}
+@media (max-width: 600px) {
+  .svc-page-wrap  { padding-left: 16px !important; padding-right: 16px !important; }
+  .svc-topbar     { padding: 0 16px !important; }
+  .svc-hero-card  { padding: 22px !important; }
+  .svc-cta-box    { padding: 40px 20px !important; }
+  .svc-cta-box a  { width: 100%; justify-content: center; }
+  .svc-page-wrap section { margin-bottom: 56px !important; }
+}
+@media (max-width: 360px) {
+  .svc-topbar-all { display: none !important; }
+  .svc-hero-stats { grid-template-columns: 1fr !important; }
+}
+
+/* ── Consultation page ── */
+@media (max-width: 600px) {
+  .consult-wrap   { padding: 32px 16px 56px !important; }
+  .consult-topbar { padding: 0 16px !important; }
+  .consult-card   { padding: 22px 18px !important; }
+  .consult-grid   { grid-template-columns: 1fr !important; }
+  .consult-steps-line { width: clamp(16px, 8vw, 80px) !important; margin: 0 4px 18px !important; }
+  .consult-step-label { white-space: normal !important; max-width: 64px; text-align: center; line-height: 1.3; }
+}
+@media (max-width: 380px) {
+  .consult-topbar-tag { display: none !important; }
+  .consult-actions button { padding-left: 18px !important; padding-right: 18px !important; }
 }
 
 /* ── Footer & Spacer colors ── */

@@ -155,7 +155,7 @@ export default function Footer() {
           <div className="footer-newsletter" style={{ display:'flex',flexDirection:'column',gap:7,minWidth:260,maxWidth:320 }}>
             <div style={{ fontFamily:"'Montserrat',sans-serif",fontSize:'.65rem',fontWeight:600,color:muted,textAlign:'center' }}>Stay in the loop — no spam</div>
             <div style={{ display:'flex',gap:6 }}>
-              <div style={{ flex:1,display:'flex',alignItems:'center',gap:6,background:dark?'rgba(255,255,255,.04)':'rgba(255,255,255,.9)',border:`1px solid ${border}`,borderRadius:8,padding:'0 10px',height:36 }}>
+              <div style={{ flex:1,minWidth:0,display:'flex',alignItems:'center',gap:6,background:dark?'rgba(255,255,255,.04)':'rgba(255,255,255,.9)',border:`1px solid ${border}`,borderRadius:8,padding:'0 10px',height:36 }}>
                 <MailIcon size={12} color={muted}/>
                 <input type="email" placeholder="your@email.com" value={email} onChange={e=>setEmail(e.target.value)} onKeyDown={e=>e.key==='Enter'&&handleSub()}
                   style={{ flex:1,background:'transparent',border:'none',outline:'none',fontFamily:"'Montserrat',sans-serif",fontSize:'.7rem',color:text,minWidth:0 }}/>
@@ -187,20 +187,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 960px) {
-          .footer-bottom { grid-template-columns: 1fr !important; gap: 24px !important; }
-          .footer-bottom > div:first-child { align-items: center !important; }
-          .footer-bottom > div:last-child  { align-items: center !important; }
-          .footer-newsletter { min-width: unset !important; max-width: 100% !important; width: 100% !important; }
-        }
-        @media (max-width: 600px) {
-          .footer-stats   { grid-template-columns: repeat(2,1fr) !important; }
-          .footer-cta-row { flex-direction: column !important; align-items: stretch !important; }
-          .footer-cta-row a { justify-content: center !important; }
-        }
-      `}</style>
     </footer>
   );
 }

@@ -194,25 +194,25 @@ export default function ServicePage() {
 
       {/* ── NAVBAR ROW ── */}
       <div style={{ position:'sticky', top:0, zIndex:100, background: dark ? 'rgba(8,13,26,.85)' : 'rgba(250,248,243,.9)', backdropFilter:'blur(20px)', borderBottom:`1px solid ${border}` }}>
-        <div style={{ maxWidth:1120, margin:'0 auto', padding:'0 24px', height:56, display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+        <div className="svc-topbar" style={{ maxWidth:1120, margin:'0 auto', padding:'0 24px', height:56, display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
           <button onClick={() => router.push('/')}
             style={{ display:'inline-flex', alignItems:'center', gap:8, background:'none', border:`1px solid ${border}`, borderRadius:8, padding:'7px 14px', color:muted, cursor:'pointer', fontFamily:"'Montserrat',sans-serif", fontSize:'.75rem', fontWeight:600, transition:'all .2s' }}
             onMouseEnter={e => { e.currentTarget.style.borderColor=svc.color; e.currentTarget.style.color=svc.color; }}
             onMouseLeave={e => { e.currentTarget.style.borderColor=border; e.currentTarget.style.color=muted; }}>
             ← Back
           </button>
-          <a href="/#services" style={{ fontSize:'.72rem', color:muted, textDecoration:'none', fontWeight:600, letterSpacing:'.06em' }}>All Services</a>
+          <a href="/#services" className="svc-topbar-all" style={{ fontSize:'.72rem', color:muted, textDecoration:'none', fontWeight:600, letterSpacing:'.06em' }}>All Services</a>
           <a href="/#contact"
-            style={{ padding:'8px 18px', borderRadius:8, background:'linear-gradient(135deg,#ff4d00,#c73b00)', color:'#fff', textDecoration:'none', fontSize:'.72rem', fontWeight:700, letterSpacing:'.06em' }}>
+            style={{ padding:'8px 18px', borderRadius:8, background:'linear-gradient(135deg,#ff4d00,#c73b00)', color:'#fff', textDecoration:'none', fontSize:'.72rem', fontWeight:700, letterSpacing:'.06em', whiteSpace:'nowrap' }}>
             Get Started →
           </a>
         </div>
       </div>
 
-      <div style={{ maxWidth:1120, margin:'0 auto', padding:'0 24px', position:'relative', zIndex:1 }}>
+      <div className="svc-page-wrap" style={{ maxWidth:1120, margin:'0 auto', padding:'0 24px', position:'relative', zIndex:1 }}>
 
         {/* ── HERO ── */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, alignItems:'center', padding:'56px 0 64px', borderBottom:`1px solid ${border}`, marginBottom:64 }}>
+        <div className="svc-hero-grid" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48, alignItems:'center', padding:'56px 0 64px', borderBottom:`1px solid ${border}`, marginBottom:64 }}>
 
           {/* Left */}
           <div>
@@ -234,12 +234,12 @@ export default function ServicePage() {
 
           {/* Right — service icon + stats */}
           <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
-            <div style={{ background:bgCard, border:`1px solid ${svc.color}25`, borderRadius:20, padding:'32px', display:'flex', flexDirection:'column', alignItems:'center', gap:16, backdropFilter:'blur(12px)' }}>
+            <div className="svc-hero-card" style={{ background:bgCard, border:`1px solid ${svc.color}25`, borderRadius:20, padding:'32px', display:'flex', flexDirection:'column', alignItems:'center', gap:16, backdropFilter:'blur(12px)' }}>
               <div style={{ width:80, height:80, borderRadius:22, background:`${svc.color}15`, border:`2px solid ${svc.color}30`, display:'flex', alignItems:'center', justifyContent:'center', boxShadow:`0 8px 32px ${svc.color}20` }}>
                 <SvcIcon slug={slug} color={svc.color}/>
               </div>
               <div style={{ width:'100%', height:1, background:`${svc.color}15` }}/>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, width:'100%' }}>
+              <div className="svc-hero-stats" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, width:'100%' }}>
                 {[
                   { label:'Starting At', value: svc.startingPrice },
                   { label:'Timeline',    value: svc.timeline },
@@ -256,16 +256,10 @@ export default function ServicePage() {
           </div>
         </div>
 
-        <style>{`
-          @media (max-width: 768px) {
-            .svc-hero-grid { grid-template-columns: 1fr !important; }
-          }
-        `}</style>
-
         {/* ── WHAT YOU GET ── */}
         <section style={{ marginBottom:80 }}>
           <SectionHeader title="What You Get" sub="Everything included — no hidden costs, no surprises." color={svc.color} dark={dark}/>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:16 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(240px,100%),1fr))', gap:16 }}>
             {svc.whatYouGet.map((section, i) => (
               <div key={section.heading} style={{ background:bgCard, border:`1px solid ${border}`, borderTop:`3px solid ${svc.color}`, borderRadius:14, padding:'22px', backdropFilter:'blur(12px)', transition:'transform .2s, box-shadow .2s' }}
                 onMouseEnter={e => { e.currentTarget.style.transform='translateY(-4px)'; e.currentTarget.style.boxShadow=`0 12px 40px ${svc.color}18`; }}
@@ -320,7 +314,7 @@ export default function ServicePage() {
 
         {/* ── IDEAL FOR + DELIVERABLES ── */}
         <section style={{ marginBottom:80 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:20 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(280px,100%),1fr))', gap:20 }}>
             {/* Ideal for */}
             <div style={{ background:bgCard, border:`1px solid ${border}`, borderRadius:16, padding:'28px', backdropFilter:'blur(12px)' }}>
               <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:20 }}>
@@ -361,7 +355,7 @@ export default function ServicePage() {
 
         {/* ── CTA ── */}
         <section style={{ marginBottom:80 }}>
-          <div style={{ textAlign:'center', padding:'56px 32px', background:bgCard, border:`1px solid ${svc.color}25`, borderRadius:24, backdropFilter:'blur(20px)', position:'relative', overflow:'hidden' }}>
+          <div className="svc-cta-box" style={{ textAlign:'center', padding:'56px 32px', background:bgCard, border:`1px solid ${svc.color}25`, borderRadius:24, backdropFilter:'blur(20px)', position:'relative', overflow:'hidden' }}>
             {/* glow */}
             <div style={{ position:'absolute', top:'-40%', left:'50%', transform:'translateX(-50%)', width:'60%', height:'200%', background:`radial-gradient(ellipse, ${svc.color}14, transparent 70%)`, pointerEvents:'none' }}/>
             <div style={{ position:'relative', zIndex:1 }}>
@@ -393,7 +387,7 @@ export default function ServicePage() {
       </div>
 
       {/* ── Scroll Down Indicator ── */}
-      <div onClick={() => window.scrollBy({ top: window.innerHeight * 0.8, behavior:'smooth' })}
+      <div className="svc-scroll-hint" onClick={() => window.scrollBy({ top: window.innerHeight * 0.8, behavior:'smooth' })}
         style={{ position:'fixed', right:24, bottom:32, zIndex:200, display:'flex', flexDirection:'column', alignItems:'center', gap:8, cursor:'pointer',
           opacity: showScroll ? 1 : 0, transform: showScroll ? 'translateY(0)' : 'translateY(16px)',
           transition:'opacity .4s, transform .4s', pointerEvents: showScroll ? 'auto' : 'none' }}>
@@ -408,15 +402,13 @@ export default function ServicePage() {
         </div>
       </div>
 
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@700;800;900&family=Montserrat:wght@400;500;600;700;800&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        html { scroll-behavior: smooth; }
+      {/* fonts + reset come from globals.css; dangerouslySetInnerHTML avoids a hydration mismatch on escaped CSS */}
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes scrollBounce {
           0%, 100% { transform: translateY(0); }
           50%       { transform: translateY(5px); }
         }
-      `}</style>
+      ` }}/>
     </div>
   );
 }

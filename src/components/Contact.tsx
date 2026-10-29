@@ -134,7 +134,7 @@ export default function Contact() {
       )}
       <div className="section-inner">
       <div className="contact-grid" style={{ display:'grid',gridTemplateColumns:'1fr 1fr',gap:60,alignItems:'start',maxWidth:1000,margin:'0 auto' }}>
-        <div ref={leftRef} className="reveal">
+        <div ref={leftRef} className="reveal contact-left">
           <div className="sec-label">Quick Inquiry</div>
           <h2 style={{ fontFamily:"'Exo 2',sans-serif",fontSize:'clamp(2.4rem,4.5vw,4.6rem)',fontWeight:800,lineHeight:.98,marginBottom:18,letterSpacing:'-.02em',color:textColor }}>
             Let&apos;s Build<br/>Something <span style={{ color:'#ff4d00' }}>Incredible.</span>
@@ -144,7 +144,7 @@ export default function Contact() {
           </p>
 
           {/* Consultation CTA */}
-          <a href="/consultation" style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 20px',borderRadius:14,background:dark?'rgba(255,77,0,.08)':'rgba(255,77,0,.06)',border:'1px solid rgba(255,77,0,.22)',textDecoration:'none',marginBottom:32,transition:'all .2s',gap:12 }}
+          <a href="/consultation" className="contact-cta" style={{ display:'flex',alignItems:'center',justifyContent:'space-between',padding:'16px 20px',borderRadius:14,background:dark?'rgba(255,77,0,.08)':'rgba(255,77,0,.06)',border:'1px solid rgba(255,77,0,.22)',textDecoration:'none',marginBottom:32,transition:'all .2s',gap:12 }}
             onMouseEnter={e=>(e.currentTarget as HTMLAnchorElement).style.background=dark?'rgba(255,77,0,.14)':'rgba(255,77,0,.1)'}
             onMouseLeave={e=>(e.currentTarget as HTMLAnchorElement).style.background=dark?'rgba(255,77,0,.08)':'rgba(255,77,0,.06)'}>
             <div>
@@ -154,7 +154,7 @@ export default function Contact() {
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff4d00" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink:0 }}><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
 
-          <div style={{ display:'flex',flexDirection:'column',gap:16 }}>
+          <div className="contact-info" style={{ display:'flex',flexDirection:'column',gap:16 }}>
             {INFO.map(({ Icon,label,value }) => (
               <div key={label} style={{ display:'flex',gap:14,alignItems:'center' }}>
                 <div style={{ width:42,height:42,border:`1.5px solid ${dark?'#232545':'#c8ccec'}`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0,borderRadius:10,background:dark?'#0b0d18':'#eaecf8',color:'#ff4d00' }}><Icon size={18} color="#ff4d00"/></div>

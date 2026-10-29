@@ -104,7 +104,7 @@ export default function Hero() {
       <div className="hero-layout section-inner" style={{ position:'relative',zIndex:2,display:'grid',gridTemplateColumns:'1fr 1fr 360px',gap:36,alignItems:'center',width:'100%' }}>
 
         {/* ── LEFT ── */}
-        <div style={{ opacity:0, animation:'fadeUp .8s .1s forwards' }}>
+        <div className="hero-left" style={{ opacity:0, animation:'fadeUp .8s .1s forwards' }}>
           <h1 style={{ fontFamily:"'Exo 2',sans-serif",fontWeight:900,fontSize:'clamp(2.6rem,5vw,4.8rem)',lineHeight:1.04,letterSpacing:'-.02em',marginBottom:10,color:textColor }}>
             We Build<br/>
             <span style={{ color:'transparent',WebkitTextStroke:`2px #ff4d00` }}>Digital</span><br/>
@@ -123,7 +123,7 @@ export default function Hero() {
           </div>
 
           {/* Social proof row */}
-          <div style={{ display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderTop:`1px solid ${dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.07)'}` }}>
+          <div className="hero-proof" style={{ display:'flex',alignItems:'center',gap:12,padding:'12px 0',borderTop:`1px solid ${dark?'rgba(255,255,255,.06)':'rgba(0,0,0,.07)'}` }}>
             <div style={{ display:'flex' }}>
               {['AR','PS','KM','SR'].map((init,i)=>(
                 <div key={init} style={{ width:30,height:30,borderRadius:'50%',background:`linear-gradient(135deg,${['#4f8cff','#ff4d00','#ffb800','#22c55e'][i]},${['#4f8cff88','#ff4d0088','#ffb80088','#22c55e88'][i]})`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'Exo 2',sans-serif",fontSize:'.62rem',fontWeight:800,color:'#fff',marginLeft:i>0?-8:0,border:`2px solid ${dark?'#12103d':'#faf8f3'}` }}>{init}</div>
